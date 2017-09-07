@@ -2,28 +2,23 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { AppConfigurationProvider as AppConfig } from '../providers/configuration/app-configuration';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
+  showLevel1 = null;
+  showLevel2 = null;
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = 'landing';
 
-  pages: Array<{title: string, component: any}>;
+  pages:any;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,private appConfig: AppConfig) {
+    this.parseMenu();
     this.initializeApp();
-
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
-    ];
 
   }
 
@@ -36,9 +31,56 @@ export class MyApp {
     });
   }
 
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+  openPage(page,categoryId,slug) {
+    // console.log(this.getPageComponent(page));
+    this.nav.push('landing',{
+      'catId':categoryId,
+      'pageName':slug
+    });
   }
+  parseMenu(){
+    this.appConfig.fetchMenuItems()
+    .subscribe((response) => {
+         this.pages = response.items;
+    },
+    (error)=> {
+      console.log('error in parseMenu');
+      console.log(error);
+    });
+  }
+  getPageComponent(pageTitle){
+    var componentName:string= null;
+    switch(pageTitle){
+      case 'Home': 
+      componentName = 'HomePage';
+      break;
+      default: 
+      componentName = 'ListPage';
+      break;
+    }
+    return componentName;
+  }
+  toggleLevel1(idx) {
+  if (this.isLevel1Shown(idx)) {
+    this.showLevel1 = null;
+  } else {
+    this.showLevel1 = idx;
+  }
+};
+toggleLevel2(idx) {
+  if (this.isLevel2Shown(idx)) {
+    this.showLevel1 = null;
+    this.showLevel2 = null;
+  } else {
+    this.showLevel1 = idx;
+    this.showLevel2 = idx;
+  }
+};
+isLevel1Shown(idx) {
+  return this.showLevel1 === idx;
+};
+
+isLevel2Shown(idx) {
+  return this.showLevel2 === idx;
+};
 }
