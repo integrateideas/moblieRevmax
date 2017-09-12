@@ -32,11 +32,12 @@ export class MyApp {
   }
 
   openPage(page,categoryId,slug) {
-    // console.log(this.getPageComponent(page));
+    console.log('here in open page');
     this.nav.push('landing',{
       'catId':categoryId,
       'pageName':slug
     });
+    console.log('to home page');
   }
   parseMenu(){
     this.appConfig.fetchMenuItems()
