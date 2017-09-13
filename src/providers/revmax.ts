@@ -13,18 +13,18 @@ import {Observable} from 'rxjs/Observable';
 */
 @Injectable()
 export class RevmaxProvider {
-  categoryProductSubject:Subject<any>; 
+  getDataSubject:Subject<any>; 
   wooCommerceStagingUrl:string="http://revmax.twinspark.co";
   wooCommerceLiveUrl:string="http://revmax.twinspark.co";
   wooCommerceConsumerKey:string="ck_5ecf43a297b5341dfb68c4ba5f7e83db56125b19";
   wooCommerceConsumerSecret:string="cs_6387cb6a55c87e8cd6223fbca39a92324dbfd013";
   wooCommerceVersion:string="wc/v2";
-
-  products:any = false;
-  productInfo:any = false;
+  
+  products:any = {};
+  // productInfo:any = false;
   constructor(  public http: CustomHttpProvider, private woo: WooApiService) {
 
-    this.categoryProductSubject = new Subject();
+    this.getDataSubject = new Subject();
     
   }
   fetchCategoryProducts(catId){
@@ -34,25 +34,29 @@ export class RevmaxProvider {
     console.log('In category products');
     return this.woo.fetchItems('products?category='+catId+'&per_page=10')
         .then((products) => {
-          this.products = products;
-          this.gotProductCategories();
+          this.products.productCategory = products;
+          this.gotData();
         }
       )
         .catch(error => console.log(error));
   }
 
   /* Subject to return the category product.*/
-  gotProductCategories(){
-    this.categoryProductSubject.next(this.products);
+  gotData(){
+    this.getDataSubject.next(this.products);
   }
 
 
   fetchProductInfo(productId){
+    if(!productId){
+      return false;
+    }
     console.log('info');
-    this.woo.fetchItems('products?category='+productId+'&per_page=10')
+    this.woo.fetchItems('products/'+productId)
       .then(products => { 
-        this.productInfo = products;
-        console.log(this.productInfo);
+        this.products.productInfo = products;
+        this.gotData();
+        console.log(this.products.productInfo);
       }
     )
       .catch(error => console.log(error));

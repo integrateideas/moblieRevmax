@@ -13,6 +13,75 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding *ngIf="product">
+    <ion-card>
+        <ion-slides >
+            <ion-slide *ngFor="let image of product.images">
+              <img [src]="image.src">
+            </ion-slide>
+          </ion-slides>
+            <!-- <img src="{{product.images[0].src}}"/> -->
+        
+            <ion-card-content>
+              <ion-card-title style="color: red">
+                {{product.name}}
+              </ion-card-title>
+              <p>
+                $ {{product.price}}
+              </p>
+            </ion-card-content>
+            <button ion-button block>ADD TO CART</button>
+<!-- Tabs -->
+            <div padding>
+              <ion-segment [(ngModel)]="header">
+                <ion-segment-button value="description">
+                  Description
+                </ion-segment-button>
+                <ion-segment-button value="additionalInfo">
+                  Additional Information
+                </ion-segment-button>
+                 <ion-segment-button value="review">
+                  Review
+                </ion-segment-button>
+              </ion-segment>
+            </div>
+        
+        <div [ngSwitch]="header">
+          <ion-list *ngSwitchCase="'description'">
+              <ion-item>
+                  Description<br>
+                  <p [innerHTML]="product.description"></p> 
+              </ion-item>
+          </ion-list>
+        
+          <ion-list *ngSwitchCase="'additionalInfo'">
+            <ion-card>
+              <br>      
+              <!-- <ion-card-content *ngFor="let attribute of product.attributes">
+                <h3><b>{{attribute.name}}</b> {{attribute.options}}</h3> 
+              </ion-card-content> -->
+              <ion-card-content>
+                  <div class="row header">
+                    <div class="col"><b>Name</b></div>
+                    <div class="col"><b>Options</b></div>
+                    
+                  </div>
+                  <div class="row" *ngFor="let attribute of product.attributes">
+                    <div class="col">{{attribute.name}}</div>
+                    <div class="col">{{attribute.options}}</div>
+                    
+                  </div>
+                </ion-card-content>
+            </ion-card>
+            
+          </ion-list>
+        
+          <ion-list *ngSwitchCase="'review'"> 
+            <h3>Review</h3>         
 
+            </ion-list>
+        
+        </div>
+        
+          </ion-card>
 </ion-content>

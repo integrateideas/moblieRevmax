@@ -22,28 +22,31 @@ import { RevmaxProvider as Revmax } from '../../providers/revmax';
 export class ProductDetailPage {
   public productId;
   public product;
+  header: string;
   constructor(public navCtrl: NavController, public navParams: NavParams, public Revmax: Revmax) {
     this.productId = this.navParams.get("id");
     console.log(this.productId);
+    this.showProductDetails()
   }
 
   showProductDetails(){
     this.Revmax.fetchProductInfo(this.productId);
-    this.product = this.Revmax.productInfo;
-    console.log('here are the products');
+    this.product = this.Revmax.products.productInfo;
+    console.log('here are the products'); 
     console.log(this.product);
 
     if(this.product){
-      this.product = this.Revmax.productInfo;
+      this.product = this.Revmax.products.productInfo;
+      this.header =  'description';
     }
     else{
       console.log('in else');
-      this.Revmax.categoryProductSubject.subscribe((val)=>{
-        console.log('in subs');      
+      this.Revmax.getDataSubject.subscribe((val)=>{
+        console.log('in subs of product detail');      
         console.log(val);
-        this.products = val;      
-            });
-      }
+        this.product = val.productInfo;    
+        this.header =  'description';  
+      });
     }
   }
 

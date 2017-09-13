@@ -32,19 +32,19 @@ export class HomePage {
   
   showProducts(){
     this.Revmax.fetchCategoryProducts(this.catId);
-    this.products = this.Revmax.products;
+    this.products = this.Revmax.products.productCategory;
     console.log('here are the products');
     console.log(this.products);
 
     if(this.products){
-      this.products = this.Revmax.products;
+      this.products = this.Revmax.products.productCategory;
     }
     else{
       console.log('in else');
-      this.Revmax.categoryProductSubject.subscribe((val)=>{
+      this.Revmax.getDataSubject.subscribe((val)=>{
         console.log('in subs');      
         console.log(val);
-        this.products = val;      
+        this.products = val.productCategory;      
             });
       }
     }
