@@ -1,37 +1,35 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
-</ion-header>
-{{ products }}
-<ion-content class="card-background-page">
+    <ion-navbar hideBackButton="true">
+        <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+      <ion-title>
+        Home
+      </ion-title>
+    </ion-navbar>
+  </ion-header>
   
-    <ion-card *ngFor="let hero of heroes">
-      <img src="img/card-saopaolo.png"/>
-      <div class="card-title">São Paulo</div>
-      <div class="card-subtitle">41 Listings</div>
-    </ion-card>
-  
-    <ion-card>
-      <img src="img/card-amsterdam.png"/>
-      <div class="card-title">Amsterdam</div>
-      <div class="card-subtitle">64 Listings</div>
-    </ion-card>
-  
-    <ion-card>
-      <img src="img/card-sf.png"/>
-      <div class="card-title">San Francisco</div>
-      <div class="card-subtitle">72 Listings</div>
-    </ion-card>
-  
-    <ion-card>
-      <img src="img/card-madison.png"/>
-      <div class="card-title">Madison</div>
-      <div class="card-subtitle">28 Listings</div>
-    </ion-card>
-  
-  </ion-content>
+<ion-content>
+    <ion-grid>
+        <ion-row>
+          <ion-col col-6 *ngFor="let product of products"><ion-thumbnail item-start>
+              <img src="{{product.images[0].src }}" (click)= 'showProductDetail(product.id)'>
+            </ion-thumbnail>
+            <small>{{product.name}}</small></ion-col>
+        </ion-row>
+      </ion-grid>
+  <!-- <ion-list>
+      <ion-item *ngFor="let product of products">
+          <ion-thumbnail item-start>
+            <img src="{{product.images[0].src }}">
+          </ion-thumbnail>
+          <h2>{{product.name}}</h2>
+          <p>{{product.slug}}</p>
+          <button ion-button clear item-end>View</button>
+        </ion-item>
+  </ion-list>
+   -->
+</ion-content>
+
+
   
