@@ -7,15 +7,19 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>productDetail</ion-title>
+    <ion-title>Product Detail</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding *ngIf="product">
+    <ion-fab right top edge (click)="openCart()">
+        <button ion-fab color="danger"><ion-icon name="cart"></ion-icon></button>
+    </ion-fab>
+
     <ion-card>
-        <ion-slides >
+        <ion-slides autoplay="4000" loop="true">
             <ion-slide *ngFor="let image of product.images">
               <img [src]="image.src">
             </ion-slide>
@@ -30,17 +34,19 @@
                 $ {{product.price}}
               </p>
             </ion-card-content>
-            <button ion-button block>ADD TO CART</button>
+            <button ion-button color= "#E2E0DF" icon-left block (click)="addToCart(product)">
+                <ion-icon name="basket"></ion-icon> ADD TO CART
+              </button>
 <!-- Tabs -->
             <div padding>
               <ion-segment [(ngModel)]="header">
-                <ion-segment-button value="description">
+                <ion-segment-button style="color: red" value="description">
                   Description
                 </ion-segment-button>
-                <ion-segment-button value="additionalInfo">
+                <ion-segment-button style="color: red" value="additionalInfo">
                   Additional Information
                 </ion-segment-button>
-                 <ion-segment-button value="review">
+                 <ion-segment-button style="color: red" value="review">
                   Review
                 </ion-segment-button>
               </ion-segment>

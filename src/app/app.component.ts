@@ -12,7 +12,7 @@ export class MyApp {
   showLevel2 = null;
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = 'landing';
+  rootPage: any = 'shop';
 
   pages:any;
 
@@ -33,7 +33,7 @@ export class MyApp {
 
   openPage(page,categoryId,slug) {
     console.log('here in open page');
-    this.nav.push('landing',{
+    this.nav.push('shop',{
       'catId':categoryId,
       'pageName':slug
     });
