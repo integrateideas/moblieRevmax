@@ -33,7 +33,7 @@ export class MyApp {
 
   openPage(page,categoryId,slug) {
     console.log('here in open page');
-    this.nav.push('shop',{
+    this.nav.setRoot('shop',{
       'catId':categoryId,
       'pageName':slug
     });

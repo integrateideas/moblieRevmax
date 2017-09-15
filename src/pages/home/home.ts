@@ -53,7 +53,7 @@ export class HomePage {
   }
 
   showProductDetail(productId){
-    this.navCtrl.push('product-detail',{id: productId});
+    this.navCtrl.setRoot('product-detail',{id: productId});
   }
 
   presentLoading() {

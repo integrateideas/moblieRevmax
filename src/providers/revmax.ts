@@ -53,6 +53,7 @@ export class RevmaxProvider {
     }
     console.log('info');
     this.woo.fetchItems('products/'+productId)
+    // this.woo.fetchItems('products/attributes/36')
       .then(products => { 
         this.products.productInfo = products;
         this.gotData();
@@ -60,7 +61,9 @@ export class RevmaxProvider {
       }
     )
       .catch(error => console.log(error));
-  } 
+  }
+  
+  
   fetchCategories(){
     console.log('In categories');
     this.woo.fetchItems('products/categories')

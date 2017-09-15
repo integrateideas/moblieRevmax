@@ -3,6 +3,8 @@ import { IonicPageModule } from 'ionic-angular';
 import { ProductDetailPage } from './product-detail';
 import { RevmaxProvider } from '../../providers/revmax';
 import { WooApiModule } from 'ng2woo';
+import { IonicStorageModule } from '@ionic/storage';
+
 
 const WooCommerceConfig = {
   url:   'http://revmax.twinspark.co', 
@@ -15,11 +17,12 @@ const WooCommerceConfig = {
   declarations: [ProductDetailPage],
   imports: [
     IonicPageModule.forChild(ProductDetailPage),
-    WooApiModule.forRoot(WooCommerceConfig)
+    WooApiModule.forRoot(WooCommerceConfig),
+    IonicStorageModule.forRoot()
   ],
   providers: [
     RevmaxProvider,
-    WooApiModule
+    WooApiModule,
   ]
 })
 export class ProductDetailPageModule {}
