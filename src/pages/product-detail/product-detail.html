@@ -17,8 +17,8 @@
 
 
 <ion-content padding *ngIf="product">
-    <ion-fab right top edge (click)="openCart()">
-        <button ion-fab color="danger"><ion-icon name="cart"></ion-icon></button>
+    <ion-fab style="top: 5px;" right top edge (click)="openCart()">
+        <button style="width: 40px; height:40px" ion-fab color="danger"><ion-icon name="cart"></ion-icon></button>
     </ion-fab>
 
     <ion-card>
@@ -40,7 +40,6 @@
             <button ion-button color= "#E2E0DF" icon-left block (click)="addToCart(product)">
                 <ion-icon name="basket"></ion-icon> ADD TO CART
               </button>
-
 <!-- Tabs -->
             <div padding>
               <ion-segment [(ngModel)]="header">
@@ -71,16 +70,16 @@
                 <h3><b>{{attribute.name}}</b> {{attribute.options}}</h3> 
               </ion-card-content> -->
               <ion-card-content>
-                  <div class="row header">
-                    <div class="col"><b>Name</b></div>
-                    <div class="col"><b>Options</b></div>
-                    
-                  </div>
-                  <div class="row" *ngFor="let attribute of product.attributes">
-                    <div class="col">{{attribute.name}}</div>
-                    <div class="col">{{attribute.options}}</div>
-                    
-                  </div>
+                  <ion-grid>
+                      <ion-row *ngFor="let att of product.attributes">
+                        <ion-col col-4>
+                          {{ att.name}}
+                        </ion-col>
+                        <ion-col col-8>
+                          <span *ngFor="let option of att.options"> {{ option }}</span>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
                 </ion-card-content>
             </ion-card>
             
