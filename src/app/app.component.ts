@@ -12,7 +12,7 @@ export class MyApp {
   showLevel2 = null;
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = 'shop';
+  rootPage: any = 'dashboard';
 
   pages:any;
 

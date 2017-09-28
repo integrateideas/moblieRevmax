@@ -69,5 +69,21 @@ export class RevmaxProvider {
     this.woo.fetchItems('products/categories')
       .then(products => console.log(products))
       .catch(error => console.log(error));
-  }    
+  }  
+  
+  /* For dashboard page */
+  
+  fetchProducts(){  
+    console.log('all products');
+    this.woo.fetchItems('products/')
+    // this.woo.fetchItems('products/attributes/36')
+      .then(products => { 
+        this.products.allProducts = products;
+        this.gotData();
+        console.log(this.products.allProducts);
+      }
+    )
+      .catch(error => console.log(error));
+  }
+
 }
