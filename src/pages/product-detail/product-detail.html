@@ -33,13 +33,39 @@
               <ion-card-title style="color: red">
                 {{product.name}}
               </ion-card-title>
-              <p>
-                $ {{product.price}}
-              </p>
+              <p [innerHTML]="product.price_html"></p>
+
+              
             </ion-card-content>
-            <button ion-button color= "#E2E0DF" icon-left block (click)="addToCart(product)">
+                <ion-grid>
+                  <ion-row *ngFor="let att of product.attributes let i = index">
+                    <ion-col col-4 *ngIf="att.variation == true" >
+                      {{ att.name}}
+                    </ion-col>
+                    <ion-col col-8 *ngIf="att.variation == true">
+                        <ion-select [(ngModel)]="variationsData[att.name]" multiple="false">
+                            <ion-option *ngFor="let option of att.options" value="{{option}}">{{option}}</ion-option>
+                        </ion-select>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col col-4 *ngIf="variationsData != null">
+                      <button  ion-button block color="primary" (click)="getProductVariations()">Get Price</button>
+                    </ion-col>
+                    <ion-col col-8 *ngIf="updatedPrice">
+                      <p [innerHTML]="updatedPrice"></p>
+                    </ion-col>
+                </ion-row>
+                </ion-grid>
+
+                <!-- <div text-center>      
+                  <button ion-button block color="primary" (click)="getProductVariations()">Get Price</button>
+                </div> -->
+            <button ion-button color= "#E2E0DF" icon-left block (click)="addCart()">
                 <ion-icon name="basket"></ion-icon> ADD TO CART
               </button>
+              <button ion-button color= "#E2E0DF" icon-left block (click)="installationInstructions()">
+                Installation Instructions</button>
 <!-- Tabs -->
             <div padding>
               <ion-segment [(ngModel)]="header">

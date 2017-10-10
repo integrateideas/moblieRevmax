@@ -4,6 +4,7 @@ import { ProductDetailPage } from './product-detail';
 import { RevmaxProvider } from '../../providers/revmax';
 import { WooApiModule } from 'ng2woo';
 import { IonicStorageModule } from '@ionic/storage';
+import { AppConfigurationProvider } from '../../providers/configuration/app-configuration';
 
 
 const WooCommerceConfig = {
@@ -11,7 +12,7 @@ const WooCommerceConfig = {
   consumerKey:    'ck_5ecf43a297b5341dfb68c4ba5f7e83db56125b19',
   consumerSecret:  'cs_6387cb6a55c87e8cd6223fbca39a92324dbfd013',
   wpAPI: true,
-  version: 'wc/v2'
+  version: 'wc/v1'
 };
 @NgModule({
   declarations: [ProductDetailPage],
@@ -23,6 +24,7 @@ const WooCommerceConfig = {
   providers: [
     RevmaxProvider,
     WooApiModule,
+    AppConfigurationProvider
   ]
 })
 export class ProductDetailPageModule {}

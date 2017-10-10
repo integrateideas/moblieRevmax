@@ -19,7 +19,6 @@ export class MyApp {
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,private appConfig: AppConfig) {
     this.parseMenu();
     this.initializeApp();
-
   }
 
   initializeApp() {
@@ -38,6 +37,7 @@ export class MyApp {
       'pageName':slug
     });
     console.log('to home page');
+    console.log(slug);
   }
   parseMenu(){
     this.appConfig.fetchMenuItems()
@@ -84,4 +84,9 @@ isLevel1Shown(idx) {
 isLevel2Shown(idx) {
   return this.showLevel2 === idx;
 };
+
+helpfulLinks(){
+  this.nav.setRoot('helpful-links');
+}
+
 }

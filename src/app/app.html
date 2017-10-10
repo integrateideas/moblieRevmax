@@ -6,15 +6,15 @@
   </ion-header>
 
   
-  <ion-content>
-    <ion-list>
-      <ion-item *ngFor="let p of pages; let i=index" text-wrap (click)="toggleLevel1('idx'+i)" [ngClass]="{active: isLevel1Shown('idx'+i)}">
+  <ion-content class="masters">
+    <ion-list color="dark">
+      <ion-item color="dark" *ngFor="let p of pages; let i=index" text-wrap (click)="toggleLevel1('idx'+i)" [ngClass]="{active: isLevel1Shown('idx'+i)}">
         <span>
           {{p.title}}
           <ion-icon color="success" item-right *ngIf ="p.children !== undefined" [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
         </span>
         <ion-list *ngIf="isLevel1Shown('idx'+i) && p.children !== undefined" >
-          <ion-item *ngFor="let s of p.children; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)" [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
+          <ion-item color="dark"  *ngFor="let s of p.children; let i2=index" text-wrap (click)="toggleLevel2('idx'+i+'idx'+i2)" [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
             <span menuToggle *ngIf="(s.children === undefined)" (click) ="openPage(s.title,s.object_id, s.attr)">
               {{s.title}}
               <ion-icon color="success" item-right *ngIf ="s.children !== undefined" [name]="isLevel2Shown('idx'+i+'idx'+i2)  ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
@@ -24,7 +24,7 @@
               <ion-icon color="success" item-right *ngIf ="s.children !== undefined" [name]="isLevel2Shown('idx'+i+'idx'+i2)  ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
             </span>
             <ion-list *ngIf="isLevel2Shown('idx'+i+'idx'+i2) && s.children !== undefined">
-              <ion-item *ngFor="let m of s.children" text-wrap>
+              <ion-item color="dark" *ngFor="let m of s.children" text-wrap>
                 <span menuToggle (click)="openPage(m.title , m.object_id, m.attr)">
                    {{m.title}}
                 </span>
@@ -33,6 +33,9 @@
             </ion-list>
           </ion-item>
         </ion-list>
+      </ion-item>
+      <ion-item color="dark" text-wrap>
+        <span menuToggle (click)="helpfulLinks()">Helpful Links</span>
       </ion-item>
     </ion-list>
   </ion-content>

@@ -16,6 +16,7 @@ import { LoadingController } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  productCat: any;
   loader: any;
   public catId;
   public products;
@@ -23,6 +24,7 @@ export class HomePage {
   constructor(public navCtrl: NavController, public navParams: NavParams,public Revmax: Revmax, public loadingCtrl: LoadingController,) {
     console.log('In constructor of home');
     this.catId = this.navParams.get("catId");
+    this.productCat = this.navParams.get("pageName");
     console.log(this.catId);
     if(!this.catId){
       console.log('no catId');
@@ -53,7 +55,7 @@ export class HomePage {
   }
 
   showProductDetail(productId){
-    this.navCtrl.setRoot('product-detail',{id: productId});
+    this.navCtrl.setRoot('product-detail',{id: productId, productCat: this.productCat});
   }
 
   presentLoading() {

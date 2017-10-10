@@ -7,6 +7,7 @@ import { HttpModule } from '@angular/http';
 import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+// import { VideoPlayer } from '@ionic-native/video-player';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     SplashScreen,
     AppConfigurationProvider,
     CustomHttpProvider,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    // VideoPlayer,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
   ]
 })
 export class AppModule {}

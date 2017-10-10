@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { RevmaxProvider as Revmax } from '../../providers/revmax';
+// import { VideoPlayer ,VideoOptions } from '@ionic-native/video-player';
 
 /**
  * Generated class for the DashboardPage page.
@@ -22,27 +23,36 @@ import { RevmaxProvider as Revmax } from '../../providers/revmax';
 export class DashboardPage {
   product: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public Revmax: Revmax, ) {
-    this.showProductDetails();
+  constructor(public navCtrl: NavController, public navParams: NavParams, public Revmax: Revmax,
+    //  private videoPlayer : VideoPlayer, private videoOpts : VideoOptions
+    ) {
+    // this.showProductDetails();
+    // this.playVideo();
   }
 
-  showProductDetails(){
-    this.Revmax.products = {};
-    this.Revmax.fetchProducts();
-    // this.product = this.Revmax.products.productInfo;
-    // console.log('here are the products'); 
-    // console.log(this.product);
+  // public playVideo(){
+  //   this.videoOpts = {volume : 1.0};
+  //   this.videoPlayer.play('https://www.youtube.com/watch?v=PNzE1MX5iRU').then(() => {
+  //   console.log('video completed');
+  //   }).catch(err => {
+  //   console.log(err);
+  //   });    
+// }
+  // showProductDetails(){
+  //   this.Revmax.products = {};
+  //   this.Revmax.fetchProducts();
+  //   // this.product = this.Revmax.products.productInfo;
+  //   // console.log('here are the products'); 
+  //   // console.log(this.product);
 
-      console.log('in else');
-      this.Revmax.getDataSubject.subscribe((val)=>{
-        console.log('in subs of product detail');      
-        console.log(val);
-        this.product = val.allProducts;    
-      });
-  }
+  //     console.log('in else');
+  //     this.Revmax.getDataSubject.subscribe((val)=>{
+  //       console.log('in subs of product detail');      
+  //       console.log(val);
+  //       this.product = val.allProducts;    
+  //     });
+  // }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad DashboardPage');
-  }
+  
 
 }
