@@ -18,7 +18,7 @@ export class RevmaxProvider {
   wooCommerceLiveUrl:string="http://revmax.twinspark.co";
   wooCommerceConsumerKey:string="ck_5ecf43a297b5341dfb68c4ba5f7e83db56125b19";
   wooCommerceConsumerSecret:string="cs_6387cb6a55c87e8cd6223fbca39a92324dbfd013";
-  wooCommerceVersion:string="wc/v2";
+  wooCommerceVersion:string="wc/v1";
   
   products:any = {};
   // productInfo:any = false;
