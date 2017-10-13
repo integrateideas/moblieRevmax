@@ -4,6 +4,7 @@ import { UpgradeProductsPage } from './upgrade-products';
 import { RevmaxProvider } from '../../providers/revmax';
 import { WooApiModule } from 'ng2woo';
 import { AppConfigurationProvider } from '../../providers/configuration/app-configuration';
+import { IonicStorageModule } from '@ionic/storage';
 
 const WooCommerceConfig = {
   url:   'http://revmax.twinspark.co', 
@@ -19,6 +20,7 @@ const WooCommerceConfig = {
   imports: [
     IonicPageModule.forChild(UpgradeProductsPage),
     WooApiModule.forRoot(WooCommerceConfig),
+    IonicStorageModule.forRoot()
   ],
   providers: [
     RevmaxProvider,

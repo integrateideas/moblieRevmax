@@ -75,14 +75,7 @@ export class CartPage {
         this.viewCtrl.dismiss();
       }
       checkout(){
-        
-            // this.storage.get("userLoginInfo").then( (data) => {
-            //   if(data != null){
-            //     this.navCtrl.push(Checkout);
-            //   } else {
-            //     this.navCtrl.push(Login, {next: Checkout})
-            //   }
-            // })
-        
+        window.open('https://revmax.twinspark.co/cart/', '_system', 'location=yes');
+            
           }
 }/* Class ends here */
