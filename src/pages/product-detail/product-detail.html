@@ -65,6 +65,7 @@
         </button>
         <button *ngIf = "instalationIns" ion-button color= "#E2E0DF" icon-left block (click)="installationInstructions()">
           Installation Instructions</button>
+        <p>SKU : {{product.sku}}</p>
 <!-- Tabs -->
         <div padding>
           <ion-segment [(ngModel)]="header">
