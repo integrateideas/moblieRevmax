@@ -112,7 +112,7 @@ export class ProductDetailPage {
       this.appConfig.addToCartVariation(this.productCat, this.productId, this.variationsData, this.variationId)
       .subscribe((response) => {
         console.log('Cart added in case of variations');
-        this.addToCart(product);
+        // this.addToCart(product);
       },
       (error)=> {
         console.log('error in adding cart');
@@ -124,13 +124,13 @@ export class ProductDetailPage {
       .subscribe((response) => {
         console.log('Cart added with no variations');
         console.log(response);
-        this.addToCart(product);
       },
       (error)=> {
         console.log('error in adding cart');
-       
+        
       });
     }
+    this.addToCart(product);
   }
 
   addToCart(product) {
