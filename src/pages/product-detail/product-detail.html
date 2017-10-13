@@ -26,60 +26,59 @@
             <ion-slide *ngFor="let image of product.images">
               <img [src]="image.src">
             </ion-slide>
-          </ion-slides>
-            <!-- <img src="{{product.images[0].src}}"/> -->
+        </ion-slides>
+        <button *ngIf="showUpgradeButton == true" text-center ion-button small color= "dark" icon-left block (click)="upgradeProduct()">
+          <ion-icon name="add-circle"></ion-icon> Upgrades & Accessories
+        </button>
+
+        <ion-card-content>
+          <ion-card-title style="color: red">
+            {{product.name}}
+          </ion-card-title>
+          <p [innerHTML]="product.price_html"></p> 
+        </ion-card-content>
         
-            <ion-card-content>
-              <ion-card-title style="color: red">
-                {{product.name}}
-              </ion-card-title>
-              <p [innerHTML]="product.price_html"></p>
+        <ion-grid>
+          <ion-row *ngFor="let att of product.attributes let i = index">
+            <ion-col col-4 *ngIf="att.variation == true" >
+              {{ att.name}}
+            </ion-col>
+            <ion-col col-8 *ngIf="att.variation == true">
+                <ion-select [(ngModel)]="variationsData[att.name]" multiple="false" (ngModelChange)="getProductVariations()">
+                    <ion-option *ngFor="let option of att.options" value="{{option}}">{{option}}</ion-option>
+                </ion-select>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+            <ion-row>
+              <ion-col col-8 *ngIf="updatedPrice">
+                  <p [innerHTML]="updatedPrice"></p>
+              </ion-col>
+          </ion-row>
 
-              
-            </ion-card-content>
-                <ion-grid>
-                  <ion-row *ngFor="let att of product.attributes let i = index">
-                    <ion-col col-4 *ngIf="att.variation == true" >
-                      {{ att.name}}
-                    </ion-col>
-                    <ion-col col-8 *ngIf="att.variation == true">
-                        <ion-select [(ngModel)]="variationsData[att.name]" multiple="false">
-                            <ion-option *ngFor="let option of att.options" value="{{option}}">{{option}}</ion-option>
-                        </ion-select>
-                    </ion-col>
-                  </ion-row>
-                  <ion-row>
-                    <ion-col col-4 *ngIf="variationsData != null">
-                      <button  ion-button block color="primary" (click)="getProductVariations()">Get Price</button>
-                    </ion-col>
-                    <ion-col col-8 *ngIf="updatedPrice">
-                      <p [innerHTML]="updatedPrice"></p>
-                    </ion-col>
-                </ion-row>
-                </ion-grid>
-
-                <!-- <div text-center>      
-                  <button ion-button block color="primary" (click)="getProductVariations()">Get Price</button>
-                </div> -->
-            <button ion-button color= "#E2E0DF" icon-left block (click)="addCart()">
-                <ion-icon name="basket"></ion-icon> ADD TO CART
-              </button>
-              <button ion-button color= "#E2E0DF" icon-left block (click)="installationInstructions()">
-                Installation Instructions</button>
+        <!-- <div text-center>      
+          <button ion-button block color="primary" (click)="getProductVariations()">Get Price</button>
+        </div> -->
+        
+        <button *ngIf = "showCartButton == true" ion-button color= "#E2E0DF" icon-left block (click)="addCart(product)">
+          <ion-icon name="basket"></ion-icon> ADD TO CART
+        </button>
+        <button *ngIf = "instalationIns" ion-button color= "#E2E0DF" icon-left block (click)="installationInstructions()">
+          Installation Instructions</button>
 <!-- Tabs -->
-            <div padding>
-              <ion-segment [(ngModel)]="header">
-                <ion-segment-button style="color: red" value="description">
-                  Description
-                </ion-segment-button>
-                <ion-segment-button style="color: red" value="additionalInfo">
-                  Additional Information
-                </ion-segment-button>
-                 <ion-segment-button style="color: red" value="review">
-                  Review
-                </ion-segment-button>
-              </ion-segment>
-            </div>
+        <div padding>
+          <ion-segment [(ngModel)]="header">
+            <ion-segment-button style="color: red" value="description">
+              Description
+            </ion-segment-button>
+            <ion-segment-button style="color: red" value="additionalInfo">
+              Additional Information
+            </ion-segment-button>
+              <ion-segment-button style="color: red" value="review">
+              Review
+            </ion-segment-button>
+          </ion-segment>
+        </div>
         
         <div [ngSwitch]="header">
           <ion-list *ngSwitchCase="'description'">
@@ -92,9 +91,6 @@
           <ion-list *ngSwitchCase="'additionalInfo'">
             <ion-card>
               <br>      
-              <!-- <ion-card-content *ngFor="let attribute of product.attributes">
-                <h3><b>{{attribute.name}}</b> {{attribute.options}}</h3> 
-              </ion-card-content> -->
               <ion-card-content>
                   <ion-grid>
                       <ion-row *ngFor="let att of product.attributes">
@@ -107,16 +103,11 @@
                       </ion-row>
                     </ion-grid>
                 </ion-card-content>
-            </ion-card>
-            
+            </ion-card>  
           </ion-list>
-        
           <ion-list *ngSwitchCase="'review'"> 
             <h3>Review</h3>         
-
             </ion-list>
-        
-        </div>
-        
-          </ion-card>
+        </div> <!-- Tabs end here -->
+    </ion-card>
 </ion-content>

@@ -73,13 +73,14 @@ export class RevmaxProvider {
   
   /* For dashboard page */
   
-  fetchProducts(){  
+  fetchProducts(upsellIds){  
     console.log('all products');
-    this.woo.fetchItems('products/')
+    this.woo.fetchItems('products?include='+upsellIds)
     // this.woo.fetchItems('products/attributes/36')
       .then(products => { 
         this.products.allProducts = products;
         this.gotData();
+        console.log('Getting upsell data from provider')
         console.log(this.products.allProducts);
       }
     )
