@@ -33,10 +33,12 @@ export class MyApp {
   openPage(page,categoryId,slug) {
     console.log('here in open page');
     this.nav.setRoot('shop',{
+      'page':page,
       'catId':categoryId,
       'pageName':slug
     });
     console.log('to home page');
+    console.log('title')
     console.log(slug);
   }
   parseMenu(){

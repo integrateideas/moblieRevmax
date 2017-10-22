@@ -14,31 +14,33 @@
 
 
 <ion-content padding *ngIf = "allProducts">
-  <ion-card *ngFor="let productOne of allProducts">       
-    <ion-card-content>
-        <ion-grid>
-            <ion-row >
-              <ion-col col-6>
-                <ion-thumbnail>
-                  <img src="{{productOne.images[0].src }}">
-                </ion-thumbnail>
-              </ion-col>
-              <ion-col col-6>
-                  {{productOne.name}}
-                  <ion-row>
-                    <ion-col col-12>
-                        <p [innerHTML]="productOne.price_html"></p>
-                    </ion-col>
-                    <ion-col col-12>
-                        <button ion-button color= "#E2E0DF" center bottom (click)="addCart(productOne.categories[0].slug, productOne.id, productOne)">ADD TO CART</button>
-                    </ion-col>
-                  </ion-row>
-              </ion-col>
-              
-            </ion-row>
-          </ion-grid>
-    </ion-card-content>  
-  </ion-card>
+  <ng-container>
+    <ion-card *ngFor="let productOne of allProducts">       
+      <ion-card-content>
+          <ion-grid>
+              <ion-row >
+                <ion-col col-6>
+                  <ion-thumbnail>
+                    <img src="{{productOne.images[0].src }}">
+                  </ion-thumbnail>
+                </ion-col>
+                <ion-col col-6>
+                    {{productOne.name}}
+                    <ion-row>
+                      <ion-col col-12>
+                          <p [innerHTML]="productOne.price_html"></p>
+                      </ion-col>
+                      <ion-col col-12>
+                          <button ion-button color= "#E2E0DF" center bottom (click)="addCart(productOne.categories[0].slug, productOne.id, productOne)">ADD TO CART</button>
+                      </ion-col>
+                    </ion-row>
+                </ion-col>
+                
+              </ion-row>
+            </ion-grid>
+      </ion-card-content>  
+    </ion-card>
+  </ng-container>
 </ion-content>
 
 <ion-footer>

@@ -3,24 +3,25 @@
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
-      <ion-title>
-        Home
+      <ion-title small>
+        {{title}}
       </ion-title>
     </ion-navbar>
   </ion-header>
   
-<ion-content>
+<ion-content scroll="false" has-header="true" padding="true">
     <ion-grid>
         <ion-row>
-          <ion-col col-6 *ngFor="let product of products"><ion-thumbnail item-start>
-              <img src="{{product.images[0].src }}" (click)= 'showProductDetail(product.id)'>
+          <ion-col col-6 *ngFor="let product of products"><ion-thumbnail>
+              <img src="{{product.images[0].src }}" (click)= 'showProductDetail(product.id, product.name)' 
+              style="
+              width: 260px; height: 260px;">
             </ion-thumbnail>
             <p style="color: red" (click)= 'showProductDetail(product.id)'>{{product.name}}</p>
             <p [innerHTML]="product.price_html"></p>
           </ion-col>
         </ion-row>
       </ion-grid>
-
 </ion-content>
 
 

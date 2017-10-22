@@ -10,13 +10,13 @@
           <ion-icon name="menu"></ion-icon>
         </button>
       <ion-title>
-        Product Detail
+        {{title}}
       </ion-title>
     </ion-navbar>
   </ion-header>
 
 
-<ion-content padding *ngIf="product">
+<ion-content scroll="false" has-header="true" padding="true" *ngIf="product">
     <ion-fab style="top: 5px;" right top edge (click)="openCart()">
         <button style="width: 40px; height:40px" ion-fab color="danger"><ion-icon name="cart"></ion-icon></button>
     </ion-fab>
@@ -24,7 +24,7 @@
     <ion-card>
         <ion-slides autoplay="4000" loop="true">
             <ion-slide *ngFor="let image of product.images">
-              <img [src]="image.src">
+              <img style="width: 100vw !important;" [src]="image.src">
             </ion-slide>
         </ion-slides>
         <button *ngIf="showUpgradeButton == true" text-center ion-button small color= "dark" icon-left block (click)="upgradeProduct()">
@@ -60,7 +60,7 @@
           <button ion-button block color="primary" (click)="getProductVariations()">Get Price</button>
         </div> -->
         
-        <button *ngIf = "showCartButton == true" ion-button color= "#E2E0DF" icon-left block (click)="addCart(product)">
+        <button ion-button color= "#E2E0DF" icon-left block (click)="addCart(product)">
           <ion-icon name="basket"></ion-icon> ADD TO CART
         </button>
         <button *ngIf = "instalationIns" ion-button color= "#E2E0DF" icon-left block (click)="installationInstructions()">

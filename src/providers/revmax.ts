@@ -66,8 +66,14 @@ export class RevmaxProvider {
   
   fetchCategories(){
     console.log('In categories');
-    this.woo.fetchItems('products/categories')
-      .then(products => console.log(products))
+    this.woo.fetchItems('products/categories?include=[667,303,623,525,390,469,327,617,662]&orderby=include')
+      .then(products => {
+        console.log(products);
+        this.products.allCategories = products;
+        this.gotData();
+        console.log(this.products.allCategories);
+      }
+    )
       .catch(error => console.log(error));
   }  
   

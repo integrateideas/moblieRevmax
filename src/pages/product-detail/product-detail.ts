@@ -23,8 +23,10 @@ import { AppConfigurationProvider as AppConfig } from '../../providers/configura
   templateUrl: 'product-detail.html',
 })
 export class ProductDetailPage {
+  title: any;
+  name: any;
   showUpgradeButton: boolean;
-  showCartButton: boolean;
+  isVariation: boolean;
   variationLength: number;
   variationId: any;
   productCat: any;
@@ -48,10 +50,11 @@ export class ProductDetailPage {
     ) {
     this.productId = this.navParams.get("id");
     this.productCat = this.navParams.get("productCat");
+    console.log('In product detail params');
+    console.log(this.name);
     this.showUpgradeButton = false;
-    this.showCartButton = true;
-    this.variationLength = Object.keys(this.variationsData).length;
-    console.log(this.productId);
+    this.isVariation = false;
+   
     this.showProductDetails();
   }
 
@@ -74,15 +77,17 @@ export class ProductDetailPage {
         this.instalationIns = this.product.short_description;   
         this.header =  'description'; 
         this.productName = this.product.slug;
+        this.title = this.product.categories[0].name;
 
-        console.log('product attributes');
-        console.log(this.product.attributes.length);
+
+        console.log('product title');
+        console.log(this.title);
 
         if(this.product.attributes.length > 0){
           for (let pro of this.product.attributes) {
             console.log(pro.variation); 
             if(pro.variation  == true){
-              this.showCartButton = false;
+              this.isVariation = true;
             }    
          }
         }
@@ -107,17 +112,21 @@ export class ProductDetailPage {
 
   addCart(product){
     console.log('In add to cart function');
-    if(this.variationId != null && typeof this.variationId != "undefined"){
-      console.log('In if');
-      this.appConfig.addToCartVariation(this.productCat, this.productId, this.variationsData, this.variationId)
-      .subscribe((response) => {
-        console.log('Cart added in case of variations');
-        // this.addToCart(product);
-      },
-      (error)=> {
-        console.log('error in adding cart');
-       
-      });
+    if(this.isVariation == true){
+      if(this.variationId != null && typeof this.variationId != "undefined"){
+        console.log('In if');
+        this.appConfig.addToCartVariation(this.productCat, this.productId, this.variationsData, this.variationId)
+        .subscribe((response) => {
+          console.log('Cart added in case of variations');
+        },
+        (error)=> {
+          console.log('error in adding cart');
+        });
+        this.addToCart(product);
+      }else{
+        alert("Please select all the variations.");
+      }
+
     }else{
       console.log('In else');
       this.appConfig.addToCart(this.productCat, this.productId)
@@ -129,104 +138,91 @@ export class ProductDetailPage {
         console.log('error in adding cart');
         
       });
-    }
-    this.addToCart(product);
+      this.addToCart(product);
+    } 
+    
   }
 
   addToCart(product) {
-
     console.log('in add to cart');
-        this.storage.get("cart").then((data) => {
-    
-          if (data == null || data.length == 0) {
-            data = [];
-    
-            data.push({
-              "product": product,
-              "qty": 1,
-              "amount": parseFloat(product.price)
-            })
-          } else {
-    
-            let added = 0;
-    
-            for (let i = 0; i < data.length; i++) {
-    
-              if (product.id == data[i].product.id) {
-                let qty = data[i].qty;
-    
-                console.log("Product is already in the cart");
-    
-                data[i].qty = qty + 1;
-                data[i].amount = parseFloat(data[i].amount) + parseFloat(data[i].product.price);
-                added = 1;
-              }
-    
-            }
+    this.storage.get("cart").then((data) => {
+    if (data == null || data.length == 0) {
+      data = [];
+      data.push({
+        "product": product,
+        "qty": 1,
+        "amount": parseFloat(product.price)
+      })
+    } else {
+    let added = 0;
+      for (let i = 0; i < data.length; i++) {
+        if (product.id == data[i].product.id) {
+          let qty = data[i].qty;
+          console.log("Product is already in the cart");
+          data[i].qty = qty + 1;
+          data[i].amount = parseFloat(data[i].amount) + parseFloat(data[i].product.price);
+          added = 1;
+        }
+    }
 
-            if (added == 0) {
-              data.push({
-                "product": product,
-                "qty": 1,
-                "amount": parseFloat(product.price)
-              })
-            }
-    
-          }
-    
-          this.storage.set("cart", data).then(() => {
-            console.log("Cart Updated");
-            console.log(data);
-    
-            this.toastCtrl.create({
-              message: "Cart Updated",
-              duration: 3000
-            }).present();
-    
-          })
-        })
-       
+    if (added == 0) {
+      data.push({
+        "product": product,
+        "qty": 1,
+        "amount": parseFloat(product.price)
+      })
       }
-    
-      openCart(){
-        this.modalCtrl.create('cart').present();
-      }
+    }
 
-      installationInstructions(){
-        this.modalCtrl.create('installations', {
-          'instructions':this.instalationIns
-        }).present();
-      }
+    this.storage.set("cart", data).then(() => {
+    console.log("Cart Updated");
+    console.log(data);
 
-      getProductVariations(){
-        console.log('In getting variation data');
-        console.log(this.variationsData);
-        console.log(this.productName);
-        // if(this.variationLength >0){
-          // this.variationLength = Object.keys(this.variationsData).length;
-          this.appConfig.getProductVariation(this.variationsData, this.productName, this.productId)
-          .subscribe((response) => {
-            console.log('in success');
-            this.showCartButton = true;
-            this.updatedPrice = response.price_html;
-            this.variationId = response.variation_id;
-            this.product.price = response.display_price;
-            console.log('success in getting variations for this product');
-               console.log(response);
-          },
-          (error)=> {
-            console.log('in error');          
-            console.log('error in getting variations for this product');
-            console.log(error);
-            
-          });
-        // }
-      }
+      this.toastCtrl.create({
+        message: "Cart Updated",
+        duration: 3000
+      }).present();
+      })
+    })      
+}
+    
+  openCart(){
+    this.modalCtrl.create('cart').present();
+  }
 
-      upgradeProduct(){
-        this.modalCtrl.create('upgrade-products', {
-          'upsellIds':this.product.upsell_ids
-        }).present();
-      }
+  installationInstructions(){
+    this.modalCtrl.create('installations', {
+      'instructions':this.instalationIns
+    }).present();
+  }
+
+  getProductVariations(){
+    console.log('In getting variation data');
+    console.log(this.variationsData);
+    console.log(this.productName);
+    // if(this.variationLength >0){
+      // this.variationLength = Object.keys(this.variationsData).length;
+      this.appConfig.getProductVariation(this.variationsData, this.productName, this.productId)
+      .subscribe((response) => {
+        this.updatedPrice = response.price_html;
+        this.variationId = response.variation_id;
+        this.product.price = response.display_price;
+        console.log('success in getting variations for this product');
+            console.log(response);
+      },
+      (error)=> {
+        console.log('in error');          
+        console.log('error in getting variations for this product');
+        console.log(error);
+        
+      });
+    // }
+  }
+
+  upgradeProduct(){
+    this.modalCtrl.create('upgrade-products', {
+      'upsellIds':this.product.upsell_ids
+    }).present();
+  }
 
 }
