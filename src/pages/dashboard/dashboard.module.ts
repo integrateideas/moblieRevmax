@@ -6,11 +6,12 @@ import { WooApiModule } from 'ng2woo';
 // import { VideoPlayer } from '@ionic-native/video-player';
 
 const WooCommerceConfig = {
-  url:   'http://revmax.twinspark.co', 
+  url:   'https://revmax.twinspark.co', 
   consumerKey:    'ck_5ecf43a297b5341dfb68c4ba5f7e83db56125b19',
   consumerSecret:  'cs_6387cb6a55c87e8cd6223fbca39a92324dbfd013',
   wpAPI: true,
-  version: 'wc/v1'
+  version: 'wc/v1',
+  queryStringAuth : true
 };
 @NgModule({
   declarations: [
@@ -24,7 +25,6 @@ const WooCommerceConfig = {
   providers: [
     RevmaxProvider,
     WooApiModule,
-    // VideoPlayer
   ]
 })
 export class DashboardPageModule {}

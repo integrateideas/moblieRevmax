@@ -27,16 +27,46 @@
     
       <ion-list>
         <ion-item *ngFor="let item of cartItems; let i = index">
-    
-          <ion-thumbnail item-left>
-            <img [src]="item.product.images[0].src" style="width: 60px !important; height: 60px !important;"/>
-          </ion-thumbnail>
-          <h2>{{ item.product.title }}</h2>
-          <p>{{ item.qty }} * {{ item.product.price }}</p>
-          <button ion-button clear item-right color="danger" (click)="removeFromCart(item, i)">
-            <ion-icon name="close-circle"></ion-icon>
-          </button>
-    
+          <ion-card>
+            <ion-grid>
+              <ion-row>
+                <ion-col col-4>
+                  <ion-thumbnail item-left>
+                    <img [src]="item.product.images[0] ? item.product.images[0].src : ''" style="width: 80px !important; height: 80px !important;"/>
+                  </ion-thumbnail>
+                </ion-col>
+                <ion-col text-wrap col-8>
+                  <h2 style="color:red">{{ item.product.name }}</h2>
+                  <p>Quantity : {{item.qty}}</p>
+                  <p>$ {{item.qty * item.product.price }}</p>
+                  <br>
+                  <p style="color:blue " tappable (click)="removeFromCart(item, i)">Remove</p>
+                  <!-- <ion-label tappable (click)="removeFromCart(item, i)" color="primary">Remove</ion-label> -->
+  
+                  <!-- <button ion-button clear item-right color="danger" tappable (click)="removeFromCart(item, i)">
+                    <ion-icon name="close-circle"></ion-icon>
+                  </button> -->
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card>
+
+          <ion-card *ngIf = "item.product.force_sell_product_info">
+              <ion-grid>
+                <ion-row>
+                  <ion-col col-4>
+                    <ion-thumbnail item-left>
+                      <img [src]="item.product.force_sell_product_info.product_image" style="width: 80px !important; height: 80px !important;"/>
+                    </ion-thumbnail>
+                  </ion-col>
+                  <ion-col text-wrap col-8>
+                    <h2>{{ item.product.force_sell_product_info.product_name }}</h2>
+                    <p>Quantity : {{item.qty}}</p>
+                    <p>$ {{item.qty * item.product.force_sell_product_info.product_price }}</p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
         </ion-item>
       </ion-list>
     
@@ -55,7 +85,7 @@
     
               </ion-col>
               <ion-col col-3 style="text-align: right">
-                <b> {{ total }} </b>
+                <b>$ {{ total }} </b>
               </ion-col>
     
     

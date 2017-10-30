@@ -27,7 +27,7 @@
               <img style="width: 100vw !important;" [src]="image.src">
             </ion-slide>
         </ion-slides>
-        <button *ngIf="showUpgradeButton == true" text-center ion-button small color= "dark" icon-left block (click)="upgradeProduct()">
+        <button *ngIf="showUpgradeButton == true" text-center ion-button small color= "dark" icon-left block tappable (click)="upgradeProduct()">
           <ion-icon name="add-circle"></ion-icon> Upgrades & Accessories
         </button>
 
@@ -36,8 +36,22 @@
             {{product.name}}
           </ion-card-title>
           <p [innerHTML]="product.price_html"></p> 
+          <ion-grid *ngIf = "product.upsell_product_info">
+              <!-- <ion-row > -->
+                <ion-list *ngFor= "let upsell of product.upsell_product_info">
+                  
+                    <button [disabled]="this.checkUpsell[upsell.id]" tappable (click)="addedProduct($event.target, upsell)">
+                      <ion-icon name="md-add"></ion-icon>
+                   Add ${{upsell.price}} ({{upsell.name}})
+                    </button>
+                  
+                </ion-list>
+              <!-- </ion-row> -->
+            </ion-grid>
         </ion-card-content>
         
+          
+
         <ion-grid>
           <ion-row *ngFor="let att of product.attributes let i = index">
             <ion-col col-4 *ngIf="att.variation == true" >
@@ -50,6 +64,7 @@
             </ion-col>
           </ion-row>
         </ion-grid>
+       
             <ion-row>
               <ion-col col-8 *ngIf="updatedPrice">
                   <p [innerHTML]="updatedPrice"></p>

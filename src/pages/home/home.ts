@@ -68,5 +68,8 @@ export class HomePage {
     });
     this.loader.present();
   }
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad HomePage');
+  // }
 
 }

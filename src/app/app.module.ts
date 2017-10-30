@@ -7,8 +7,20 @@ import { HttpModule } from '@angular/http';
 import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-// import { VideoPlayer } from '@ionic-native/video-player';
 
+import { RevmaxProvider } from '../providers/revmax';
+import { WooApiModule } from 'ng2woo';
+import { IonicStorageModule } from '@ionic/storage';
+
+// import { VideoPlayer } from '@ionic-native/video-player';
+const WooCommerceConfig = {
+  url:   'https://revmax.twinspark.co', 
+  consumerKey:    'ck_5ecf43a297b5341dfb68c4ba5f7e83db56125b19',
+  consumerSecret:  'cs_6387cb6a55c87e8cd6223fbca39a92324dbfd013',
+  wpAPI: true,
+  version: 'wc/v1',
+  queryStringAuth : true
+};
 
 @NgModule({
   declarations: [
@@ -18,6 +30,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpModule,
+    WooApiModule.forRoot(WooCommerceConfig),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -28,6 +42,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     SplashScreen,
     AppConfigurationProvider,
     CustomHttpProvider,
+    RevmaxProvider,
+    WooApiModule,
     // VideoPlayer,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
   ]

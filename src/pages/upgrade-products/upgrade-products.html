@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content padding *ngIf = "allProducts">
+<ion-content *ngIf = "allProducts">
   <ng-container>
     <ion-card *ngFor="let productOne of allProducts">       
       <ion-card-content>
@@ -31,7 +31,7 @@
                           <p [innerHTML]="productOne.price_html"></p>
                       </ion-col>
                       <ion-col col-12>
-                          <button ion-button color= "#E2E0DF" center bottom (click)="addCart(productOne.categories[0].slug, productOne.id, productOne)">ADD TO CART</button>
+                          <button ion-button color= "#E2E0DF" [disabled]="this.checkUpsells[productOne.id]" center bottom (click)="addCart(productOne)">ADD TO CART</button>
                       </ion-col>
                     </ion-row>
                 </ion-col>

@@ -15,10 +15,13 @@ import {Observable} from 'rxjs/Observable';
 export class RevmaxProvider {
   getDataSubject:Subject<any>; 
   wooCommerceStagingUrl:string="http://revmax.twinspark.co";
-  wooCommerceLiveUrl:string="http://revmax.twinspark.co";
+  wooCommerceLiveUrl:string="https://revmax.twinspark.co";
   wooCommerceConsumerKey:string="ck_5ecf43a297b5341dfb68c4ba5f7e83db56125b19";
   wooCommerceConsumerSecret:string="cs_6387cb6a55c87e8cd6223fbca39a92324dbfd013";
   wooCommerceVersion:string="wc/v1";
+  wooCommerceQueryStringAuth : true;
+  // Use false when need test with self-signed certificates, default is true (optional)
+ // encoding: 'utf8', // Encode, default is 'utf8' (optional)
   
   products:any = {};
   // productInfo:any = false;
@@ -32,8 +35,9 @@ export class RevmaxProvider {
       return false;
     }
     console.log('In category products');
-    return this.woo.fetchItems('products?category='+catId+'&per_page=10')
+    return this.woo.fetchItems('products?category='+catId)
         .then((products) => {
+          console.log(products);
           this.products.productCategory = products;
           this.gotData();
         }
@@ -64,6 +68,7 @@ export class RevmaxProvider {
   }
   
   
+  /* For dashboard page */
   fetchCategories(){
     console.log('In categories');
     this.woo.fetchItems('products/categories?include=[667,303,623,525,390,469,327,617,662]&orderby=include')
@@ -77,8 +82,7 @@ export class RevmaxProvider {
       .catch(error => console.log(error));
   }  
   
-  /* For dashboard page */
-  
+  /* Fetch upsell products */
   fetchProducts(upsellIds){  
     console.log('all products');
     this.woo.fetchItems('products?include='+upsellIds)
