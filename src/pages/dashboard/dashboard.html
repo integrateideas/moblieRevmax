@@ -16,16 +16,14 @@
 </ion-header>
 
 
-<ion-content padding>
-  <!-- <ion-grid>
-    <ion-row>
-      <ion-col col-6 *ngFor="let product of products"><ion-thumbnail item-start>
-          <img src="{{product.images[0].src }}" (click)= 'showProductDetail(product.id)'>
-        </ion-thumbnail>
-        <h4 style="color: red" (click)= 'showProductDetail(product.id)'>{{product.name}}</h4>
-        
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
-  
+<ion-content *ngIf= "products">
+    <ng-container>
+      <ion-grid>
+          <ion-row *ngFor="let product of products">
+            <ion-col width-50>
+                <img src="{{product.image.src }}" (click)= 'showProductDetail(product.id, product.name)'>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+    </ng-container>
 </ion-content>

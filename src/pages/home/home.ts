@@ -16,26 +16,28 @@ import { LoadingController } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  title: any;
   productCat: any;
   loader: any;
-  public catId;
-  public products;
+  catId: any;
+  products: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public Revmax: Revmax, public loadingCtrl: LoadingController,) {
     console.log('In constructor of home');
-    this.catId = this.navParams.get("catId");
-    this.productCat = this.navParams.get("pageName");
-    console.log(this.catId);
-    if(!this.catId){
-      console.log('no catId');
-    }
 
     this.showProducts();
   }
   
   showProducts(){
     this.presentLoading();
-    this.Revmax.products = {};
+    this.catId = this.navParams.get("catId");
+    this.title = this.navParams.get("page");
+    this.productCat = this.navParams.get("pageName");
+    console.log(this.catId);
+    if(!this.catId){
+      console.log('no catId');
+    }
+    // this.Revmax.products = {};
     this.Revmax.fetchCategoryProducts(this.catId);
 
     // this.products = this.Revmax.products.productCategory;
@@ -54,8 +56,10 @@ export class HomePage {
     }
   }
 
-  showProductDetail(productId){
-    this.navCtrl.setRoot('product-detail',{id: productId, productCat: this.productCat});
+  showProductDetail(productId, name){
+    console.log('home navigation content. Name should be there');
+    console.log(name);
+    this.navCtrl.setRoot('product-detail',{id: productId, productCat: this.productCat, name: name});
   }
 
   presentLoading() {

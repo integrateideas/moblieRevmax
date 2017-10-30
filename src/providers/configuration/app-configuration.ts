@@ -29,12 +29,6 @@ export class AppConfigurationProvider {
   /* Fetch the product variation */
     getProductVariation(requestData, product, productId){
       let body = new URLSearchParams();
-      // body.set('product_id', '3614');
-      // body.set('attribute_select-type', '1998.5-2002 24 Valve');
-      // body.set('attribute_select-vehicle', '4 Wheel Drive');
-      // body.set('attribute_torque-converter-stall-speed', 'Low Stall (-300 RPM)');
-      // body.set('attribute_valve-body-options', 'Standard High Performance / Towing');
-
       body.set('product_id',productId);
       for(let key in requestData){
        let key1 = key.toLowerCase( );
@@ -57,9 +51,9 @@ export class AppConfigurationProvider {
     addToCart(productCategory, productId){
       return this.http.get(this.wordpressStagingUrl+'/product-category/'+productCategory+'/?add-to-cart='+productId)
       .map((response) => response.json());
+      /* Example */
+    // <a href="http://revmax.twinspark.co/product-category/performance-valve-bodies/performance-valve-bodies-ford-diesel/?add-to-cart=4849">Add to Cart</a>
   }
-    /* Example */
-  // <a href="http://revmax.twinspark.co/product-category/performance-valve-bodies/performance-valve-bodies-ford-diesel/?add-to-cart=4849">Add to Cart</a>
 
   /* Add to cart with variations. */
   addToCartVariation(productCategory, productId, variations, variationId){
@@ -75,8 +69,14 @@ export class AppConfigurationProvider {
     
     return this.http.get(this.wordpressStagingUrl+'/product-category/'+productCategory+'/?add-to-cart='+productId+'&variation_id='+variationId+'&'+body.toString().replace(/ /g,''))
     .map((response) => response.json());
-  }
     /* Example */
   // http://revmax.twinspark.co/product/dodge-rebuilt-48re-signature-series-transmission/?add-to-cart=8490&variation_id=8531&attribute_select-vehicle=2%20Wheel%20Drive&attribute_torque-converter-stall-speed=Stock%20Stall&attribute_valve-body-options=Standard%20High%20Performance%20/%20Towing
+  }
+
+  getFrontPage(){
+    return this.http.get(this.wordpressStagingUrl+'/wp-json/wp/v2/frontpage')
+    .map((response) => response.json());
+  }
+
 
   }

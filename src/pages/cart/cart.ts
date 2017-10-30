@@ -51,38 +51,29 @@ export class CartPage {
 
   } /* Constructor ends here */
 
-  removeFromCart(item, i){
+  removeFromCart(item, i){ 
+    let price = item.product.price;
+    let qty = item.qty;  
+    this.cartItems.splice(i, 1);
+
+    this.storage.set("cart", this.cartItems).then( ()=> {
+
+      this.total = this.total - (price * qty);
+
+    });
+
+    if(this.cartItems.length == 0){
+      this.showEmptyCartMessage = true;
+    }
     
-        let price = item.product.price;
-        let qty = item.qty;
+  }
     
-        this.cartItems.splice(i, 1);
-    
-        this.storage.set("cart", this.cartItems).then( ()=> {
-    
-          this.total = this.total - (price * qty);
-    
-        });
-    
-        if(this.cartItems.length == 0){
-          this.showEmptyCartMessage = true;
-        }
-    
-    
-      }
-    
-      closeModal(){
-        this.viewCtrl.dismiss();
-      }
-      checkout(){
+  closeModal(){
+    this.viewCtrl.dismiss();
+  }
+  
+  checkout(){
+    window.open('https://revmax.twinspark.co/cart/', '_system', 'location=yes');
         
-            // this.storage.get("userLoginInfo").then( (data) => {
-            //   if(data != null){
-            //     this.navCtrl.push(Checkout);
-            //   } else {
-            //     this.navCtrl.push(Login, {next: Checkout})
-            //   }
-            // })
-        
-          }
+      }
 }/* Class ends here */
