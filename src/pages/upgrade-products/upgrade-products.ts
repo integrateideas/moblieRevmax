@@ -23,7 +23,7 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'upgrade-products.html',
 })
 export class UpgradeProductsPage {
-  checkUpsells: any;
+  checkUpsells: Array<any> =[];
   public product;
   loader: any;
   upsellIdArray: any;
@@ -42,7 +42,7 @@ export class UpgradeProductsPage {
     this.upsellIdArray = this.navParams.get("upsellIds");
     this.checkUpsells = this.navParams.get("checkUpsells");
     console.log('check upsells');
-    console.log(this.checkUpsells);
+    console.log(this.upsellIdArray);
     this.Revmax.products = {};
     this.Revmax.fetchProducts(this.upsellIdArray);
     this.Revmax.getDataSubject.subscribe((val)=>{

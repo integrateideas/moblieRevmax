@@ -8,7 +8,7 @@ import { LoadingController } from 'ionic-angular';
 @IonicPage(
   {
     name: 'shop',
-    segment: 'shop/:pageName'
+    segment: 'shop/:page/:catId'
   }
 )
 @Component({
@@ -17,7 +17,7 @@ import { LoadingController } from 'ionic-angular';
 })
 export class HomePage {
   title: any;
-  productCat: any;
+  // productCat: any;
   loader: any;
   catId: any;
   products: any;
@@ -32,7 +32,7 @@ export class HomePage {
     this.presentLoading();
     this.catId = this.navParams.get("catId");
     this.title = this.navParams.get("page");
-    this.productCat = this.navParams.get("pageName");
+    // this.productCat = this.navParams.get("pageName");
     console.log(this.catId);
     if(!this.catId){
       console.log('no catId');
@@ -59,7 +59,7 @@ export class HomePage {
   showProductDetail(productId, name){
     console.log('home navigation content. Name should be there');
     console.log(name);
-    this.navCtrl.setRoot('product-detail',{id: productId, productCat: this.productCat, name: name});
+    this.navCtrl.push('product-detail',{id: productId, /* productCat: this.productCat, */});
   }
 
   presentLoading() {
@@ -68,8 +68,6 @@ export class HomePage {
     });
     this.loader.present();
   }
-  // ionViewDidLoad() {
-  //   console.log('ionViewDidLoad HomePage');
-  // }
+
 
 }

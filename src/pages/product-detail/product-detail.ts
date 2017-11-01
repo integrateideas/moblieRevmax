@@ -15,6 +15,7 @@ import { AlertController } from 'ionic-angular';
 
 @IonicPage(
   {
+    // defaultHistory: ['shop'],
     name: 'product-detail',
     segment: 'product-detail/:id'
   }
@@ -24,13 +25,14 @@ import { AlertController } from 'ionic-angular';
   templateUrl: 'product-detail.html',
 })
 export class ProductDetailPage {
+  variable: any;
   title: any;
   name: any;
   showUpgradeButton: boolean;
   isVariation: boolean;
   variationLength: number;
   variationId: any;
-  productCat: any;
+  // productCat: any;
   updatedPrice: any;
   instalationIns: string;
   loader: any;
@@ -53,9 +55,8 @@ export class ProductDetailPage {
      public alertCtrl: AlertController
     ) {
     this.productId = this.navParams.get("id");
-    this.productCat = this.navParams.get("productCat");
+    // this.productCat = this.navParams.get("productCat");
     console.log('In product detail params');
-    console.log(this.name);
     this.showUpgradeButton = false;
     this.isVariation = false;
    
@@ -216,19 +217,19 @@ export class ProductDetailPage {
         data = [];
         data.push({
           "product": product,
-          "qty": 1,
+          "quantity": 1,
           "amount": parseFloat(this.product.price),
-          "productId": product.id,
-          "variationId": this.variationId ? this.variationId: "" ,
-          "variationData": this.variationsData ? this.variationsData: "",
+          "product_id": product.id,
+          "variation_id": this.variationId ? this.variationId: "" ,
+          "variation": this.variationsData ? this.variable : "",
         })
       } else {
         let added = 0;
           for (let i = 0; i < data.length; i++) {
             if (product.id == data[i].product.id) {
-              let qty = data[i].qty;
+              let quantity = data[i].quantity;
               console.log("Product is already in the cart");
-              data[i].qty = qty + 1;
+              data[i].quantity = quantity + 1;
               data[i].amount = parseFloat(data[i].amount) + parseFloat(this.product.price);
               added = 1;
             }
@@ -237,11 +238,11 @@ export class ProductDetailPage {
         if (added == 0) {
           data.push({
             "product": product,
-            "qty": 1,
+            "quantity": 1,
             "amount": parseFloat(this.product.price),
-            "productId": product.id,
-            "variationId": this.variationId ? this.variationId: "" ,
-            "variationData": this.variationsData ? this.variationsData: "",
+            "product_id": product.id,
+            "variation_id": this.variationId ? this.variationId: "" ,
+            "variation": this.variationsData ? this.variable: "",
           })
         }
     }
@@ -258,12 +259,9 @@ export class ProductDetailPage {
         this.selectedUpsellProducts.forEach( (upsell, index)=> {
           data.push({
                   "product": upsell,
-                  "qty": 1,
+                  "quantity": 1,
                   "amount": parseFloat(upsell.price),
-                  "productId": upsell.id,
-                  "variationId": "",
-                  "variationData": ""
-
+                  "product_id": upsell.id,
                 })
         })
         
@@ -290,6 +288,7 @@ export class ProductDetailPage {
     console.log('In getting variation data');
     console.log(this.variationsData);
     console.log(this.productName);
+    
     // if(this.variationLength >0){
       // this.variationLength = Object.keys(this.variationsData).length;
       this.appConfig.getProductVariation(this.variationsData, this.productName, this.productId)
@@ -297,6 +296,7 @@ export class ProductDetailPage {
         this.updatedPrice = response.price_html;
         this.variationId = response.variation_id;
         this.product.price = response.display_price;
+        this.variable = response.attributes;
         console.log('success in getting variations for this product');
             console.log(response);
       },
@@ -335,5 +335,8 @@ export class ProductDetailPage {
     console.log(this.selectedUpsellProducts);
   }
 
+  backPage(){
+    this.navCtrl.setRoot('shop');
+  }
 
 }

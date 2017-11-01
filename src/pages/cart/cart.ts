@@ -38,7 +38,7 @@ export class CartPage {
           if(this.cartItems != null){
               if(this.cartItems.length > 0){
                 this.cartItems.forEach( (item, index)=> {
-                  this.total = this.total + (item.product.price * item.qty)
+                  this.total = this.total + (item.product.price * item.quantity)
                 })
         
               } else {
@@ -55,12 +55,12 @@ export class CartPage {
 
   removeFromCart(item, i){ 
     let price = item.product.price;
-    let qty = item.qty;  
+    let quantity = item.quantity;  
     this.cartItems.splice(i, 1);
 
     this.storage.set("cart", this.cartItems).then( ()=> {
 
-      this.total = this.total - (price * qty);
+      this.total = this.total - (price * quantity);
 
     });
 
@@ -75,28 +75,17 @@ export class CartPage {
   }
   
   checkout(){
-    console.log('In checkout');
-    console.log(this.cartItems);
-    var urlString =  this.appConfig.wordpressStagingUrl+'/cart/?add-to-cart='
-    this.cartItems.forEach( (data, index)=> {
-      if(data.variationId == ""){
-        urlString += ','+ data.product.id + ':'+ data.qty;
-      }else{
-        let body = new URLSearchParams();
-        for(let key in data.variationData){
-          let key1 = key.toLowerCase( );
-          console.log('after lower case');
-           key1 = key1.replace(/\s/g, "-");
-           key1 = "attribute_"+key1;
-           body.set(key1, data.variationData[key]);
-          }
-        urlString += ','+ data.product.id + ':'+ data.qty + '&variation_id=' + data.variationId
-        +'&'+ body.toString().replace(/ /g,'');
-      }
-    })
-    console.log('this is the final url string');
-    console.log(urlString);
-    window.open(urlString, '_system', 'location=yes');
-        
+    
+    this.appConfig.checkout(this.cartItems).subscribe((response) => {
+     
+      console.log('response of checkout');
+      console.log(response);
+    },
+    (error)=> {
+      console.log('in error');          
+      console.log('error in getting response of checkout');
+      console.log(error);
+      
+    });
   }
 }/* Class ends here */

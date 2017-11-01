@@ -85,5 +85,27 @@ export class AppConfigurationProvider {
     .map((response) => response.json());
   }
 
+  checkout(cart){
+    console.log(cart);
+  
+
+    // const body = [
+    //   cart.forEach( (data, index)=> {
+    //     if(data.product){
+    //       delete data.product;
+    //     }
+    //   })
+    // ];
+
+
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    const body = [cart];
+    return this.http.post(this.wordpressStagingUrl+'/wp-json/mycart/v1/latest-data',body)
+    .map((response) => response.json());
+  }
+
 
   }

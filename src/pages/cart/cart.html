@@ -38,7 +38,7 @@
                 <ion-col text-wrap col-8>
                   <h2 style="color:red">{{ item.product.name }}</h2>
                   <p>Quantity : {{item.qty}}</p>
-                  <p>$ {{item.qty * item.product.price }}</p>
+                  <p>$ {{item.quantity * item.product.price }}</p>
                   <br>
                   <p style="color:blue " tappable (click)="removeFromCart(item, i)">Remove</p>
                   <!-- <ion-label tappable (click)="removeFromCart(item, i)" color="primary">Remove</ion-label> -->
@@ -61,7 +61,7 @@
                   </ion-col>
                   <ion-col text-wrap col-8>
                     <h2>{{ item.product.force_sell_product_info.product_name }}</h2>
-                    <p>Quantity : {{item.qty}}</p>
+                    <p>Quantity : {{item.quantity}}</p>
                     <p>$ {{item.qty * item.product.force_sell_product_info.product_price }}</p>
                   </ion-col>
                 </ion-row>

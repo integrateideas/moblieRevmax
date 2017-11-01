@@ -31,7 +31,8 @@
                           <p [innerHTML]="productOne.price_html"></p>
                       </ion-col>
                       <ion-col col-12>
-                          <button ion-button color= "#E2E0DF" [disabled]="this.checkUpsells[productOne.id]" center bottom (click)="addCart(productOne)">ADD TO CART</button>
+                          <button ion-button color= "#E2E0DF" [disabled]="checkUpsells[productOne.id]" center bottom (click)="addCart(productOne)">{{ checkUpsell[upsell.id] ? 'ADDED TO CART' : 'ADD TO CART'}}
+                          </button>
                       </ion-col>
                     </ion-row>
                 </ion-col>

@@ -29,7 +29,7 @@ export class MyApp {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.setupBackButtonBehavior (); /* Back button compatability */
+      // this.setupBackButtonBehavior (); /* Back button compatability */
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
@@ -40,7 +40,7 @@ export class MyApp {
     this.nav.setRoot('shop',{
       'page':page,
       'catId':categoryId,
-      'pageName':slug
+      // 'pageName':slug
     });
     console.log('to home page');
     console.log('title')
@@ -98,43 +98,43 @@ helpfulLinks(){
 
 
 /* Back button compatability */
-private setupBackButtonBehavior () {
+// private setupBackButtonBehavior () {
   
-      // If on web version (browser)
-      if (window.location.protocol !== "file:") {
+//       // If on web version (browser)
+//       if (window.location.protocol !== "file:") {
   
-        // Register browser back button action(s)
-        window.onpopstate = (evt) => {
+//         // Register browser back button action(s)
+//         window.onpopstate = (evt) => {
   
-          // Close menu if open
-          if (this._menu.isOpen()) {
-            this._menu.close ();
-            return;
-          }
+//           // Close menu if open
+//           if (this._menu.isOpen()) {
+//             this._menu.close ();
+//             return;
+//           }
   
-          // Close any active modals or overlays
-          let activePortal = this._ionicApp._loadingPortal.getActive() ||
-            this._ionicApp._modalPortal.getActive() ||
-            this._ionicApp._toastPortal.getActive() ||
-            this._ionicApp._overlayPortal.getActive();
+//           // Close any active modals or overlays
+//           let activePortal = this._ionicApp._loadingPortal.getActive() ||
+//             this._ionicApp._modalPortal.getActive() ||
+//             this._ionicApp._toastPortal.getActive() ||
+//             this._ionicApp._overlayPortal.getActive();
   
-          if (activePortal) {
-            activePortal.dismiss();
-            return;
-          }
+//           if (activePortal) {
+//             activePortal.dismiss();
+//             return;
+//           }
   
-          // Navigate back
-          if (this._app.getRootNav().canGoBack()) this._app.getRootNav().pop();
+//           // Navigate back
+//           if (this._app.getRootNav().canGoBack()) this._app.getRootNav().pop();
   
-        };
+//         };
   
-        // Fake browser history on each view enter
-        this._app.viewDidEnter.subscribe((app) => {
-          history.pushState (null, null, "");
-        });
+//         // Fake browser history on each view enter
+//         this._app.viewDidEnter.subscribe((app) => {
+//           history.pushState (null, null, "");
+//         });
   
-      }
+//       }
       
-    }
+//     }
   
 }
