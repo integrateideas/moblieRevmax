@@ -79,7 +79,7 @@ export class ProductDetailPage {
         console.log('in subs of product detail');      
         this.product = val.productInfo; 
         // console.log(this.product.data);
-        this.instalationIns = this.product.short_description;   
+        this.instalationIns = this.product.installation_instruction;   
         this.header =  'description'; 
         this.productName = this.product.slug;
         this.title = this.product.categories[0].name;
@@ -190,6 +190,21 @@ export class ProductDetailPage {
           ]
         });
         alert.present();
+      }
+      if (this.selectedUpsellProducts.length && (this.selectedUpsellProducts.length == this.product.upsell_product_info.length)) {
+        /* Check for variations */
+        if (this.isVariation == true && (this.variationId == null || typeof this.variationId == "undefined")) {
+          // alert("Please select all the variations.");
+          console.log("Please select all the variations.");
+          const alert = this.alertCtrl.create({
+            title: 'Select Variations',
+            subTitle: 'Please select all the variations.',
+            buttons: ['Ok']
+          });
+          alert.present();
+        } else {
+          this.addProductToStorage(product);
+        }
       }
     } else if(this.isVariation == true && (this.variationId == null || typeof this.variationId == "undefined")){
       const alert = this.alertCtrl.create({
@@ -310,6 +325,8 @@ export class ProductDetailPage {
   }
 
   upgradeProduct(){
+    console.log('entering modal');
+    console.log(this.product.upsell_ids);
     let chooseModal = this.modalCtrl.create('upgrade-products', {
       'upsellIds':this.product.upsell_ids,
       'checkUpsells':this.checkUpsell
@@ -318,6 +335,8 @@ export class ProductDetailPage {
       console.log(data);
        data.forEach( (product, index)=> {
         this.selectedUpsellProducts.push(product);
+        console.log("on close");
+        console.log(this.selectedUpsellProducts);
         this.checkUpsell[product.id] = true;
                   })
       
@@ -333,10 +352,6 @@ export class ProductDetailPage {
     this.checkUpsell[product.id] = true;
     console.log('Array of upsell products');
     console.log(this.selectedUpsellProducts);
-  }
-
-  backPage(){
-    this.navCtrl.setRoot('shop');
   }
 
 }

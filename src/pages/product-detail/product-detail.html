@@ -17,7 +17,7 @@
   <ion-header>
     
       <ion-navbar >
-        <ion-title *ngIf= "product">{{product.categories[0].name}}</ion-title>
+        <ion-title style= "white-space: normal" *ngIf= "product">{{product.categories[0].name}}</ion-title>
       </ion-navbar>
     
     </ion-header>
@@ -29,66 +29,89 @@
     </ion-fab>
 
     <ion-card>
-        <ion-slides autoplay="4000" loop="true">
-            <ion-slide *ngFor="let image of product.images">
-              <img style="width: 100vw !important;" [src]="image.src">
-            </ion-slide>
-        </ion-slides>
-        <button *ngIf="showUpgradeButton == true" text-center ion-button small color= "dark" icon-left block tappable (click)="upgradeProduct()">
-          <ion-icon name="add-circle"></ion-icon> Upgrades & Accessories
-        </button>
+      <ion-slides autoplay="4000" loop="true">
+          <ion-slide *ngFor="let image of product.images">
+            <img style="width: 100vw !important;" [src]="image.src">
+          </ion-slide>
+      </ion-slides>
+      <button *ngIf="showUpgradeButton == true" text-center ion-button small color= "dark" icon-left block tappable (click)="upgradeProduct()">
+        <ion-icon name="add-circle"></ion-icon> Upgrades & Accessories
+      </button>
 
-        <ion-card-content>
-          <ion-card-title style="color: red">
-            {{product.name}}
-          </ion-card-title>
-          <p [innerHTML]="product.price_html"></p> 
-          <ion-grid *ngIf = "product.upsell_product_info">
-              <!-- <ion-row > -->
-                <ion-list *ngFor= "let upsell of product.upsell_product_info">
-                  
-                    <button [disabled]="checkUpsell[upsell.id]" tappable (click)="addedProduct($event.target, upsell)">
-                      <ion-icon name="md-add"></ion-icon>
-                      <!-- Add $ {{upsell.price}} ({{upsell.name}})  -->
-                      {{ checkUpsell[upsell.id] ? 'Added $'+upsell.price+'('+upsell.name+')' : 'Add $'+upsell.price+'('+upsell.name+')'}}
-                    </button>
-                  
-                </ion-list>
-              <!-- </ion-row> -->
-            </ion-grid>
-        </ion-card-content>
+      <ion-card-title style="color: red">
+        {{product.name}}
+      </ion-card-title>
+      <ion-card-content>
+        <p [innerHTML]="product.price_html"></p> 
+        <ion-grid *ngIf = "product.upsell_product_info">
+              <ion-list *ngFor= "let upsell of product.upsell_product_info">
+                <ion-item>
+                  <button style="white-space: normal" [disabled]="checkUpsell[upsell.id]" tappable (click)="addedProduct($event.target, upsell)">
+                    <ion-icon name="md-add"></ion-icon>
+                    <!-- Add $ {{upsell.price}} ({{upsell.name}})  -->
+                    {{ checkUpsell[upsell.id] ? 'Added $'+upsell.price+'('+upsell.name+')' : 'Add $'+upsell.price+'('+upsell.name+')'}}
+                  </button>
+                </ion-item>                
+              </ion-list>
+          </ion-grid>
+      </ion-card-content> 
+    </ion-card>     
         
-          
+    <button ion-button icon-only (click)="installationInstructions()">
+        <ion-icon name="book"></ion-icon>
+      </button>
 
-        <ion-grid>
-          <ion-row *ngFor="let att of product.attributes let i = index">
-            <ion-col col-4 *ngIf="att.variation == true" >
-              {{ att.name}}
-            </ion-col>
-            <ion-col col-8 *ngIf="att.variation == true">
+      
+          <!-- <iframe src="http://wallpaperswide.com/railway-wallpapers.html"></iframe> -->
+       
+            <!-- <ion-row *ngFor="let att of product.attributes let i = index">
+              <ion-col col-4 *ngIf="att.variation == true" >
+                {{ att.name}}
+              </ion-col>
+              <ion-col col-8 *ngIf="att.variation == true">
                 <ion-select [(ngModel)]="variationsData[att.name]" multiple="false" (ngModelChange)="getProductVariations()">
-                    <ion-option *ngFor="let option of att.options" value="{{option}}">{{option}}</ion-option>
+                  <ion-option *ngFor="let option of att.options" value="{{option}}">{{option}}</ion-option>
                 </ion-select>
+              </ion-col>
+            </ion-row> -->
+        <ion-card>
+          <ng-container *ngFor="let att of product.attributes let i = index">
+            <ion-item *ngIf="att.variation == true">
+              <ion-label stacked *ngIf="att.variation == true">{{ att.name}}</ion-label>
+              <ion-select *ngIf="att.variation == true" [(ngModel)]="variationsData[att.name]" multiple="false" (ngModelChange)="getProductVariations()">
+                <ion-option *ngFor="let option of att.options" value="{{option}}">{{option}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ng-container>
+        </ion-card>    
+        <ng-container *ngIf="updatedPrice">
+            <p style= "padding: 10px" [innerHTML]="updatedPrice"></p>
+          </ng-container>
+       
+       
+        <ion-grid>
+          <ion-row>
+            <ion-col >
+              <button ion-button color= "#E2E0DF" icon-left block (click)="addCart(product)">
+                <ion-icon name="basket"></ion-icon> ADD TO CART
+              </button>
+              <!-- <button *ngIf = "instalationIns" ion-button color= "#E2E0DF" icon-left block (click)="installationInstructions()">
+                Installation Instructions</button> -->
+              <p>SKU : {{product.sku}}</p>
             </ion-col>
           </ion-row>
         </ion-grid>
-       
-            <ion-row>
-              <ion-col col-8 *ngIf="updatedPrice">
-                  <p [innerHTML]="updatedPrice"></p>
-              </ion-col>
-          </ion-row>
 
-        <!-- <div text-center>      
-          <button ion-button block color="primary" (click)="getProductVariations()">Get Price</button>
-        </div> -->
-        
-        <button ion-button color= "#E2E0DF" icon-left block (click)="addCart(product)">
-          <ion-icon name="basket"></ion-icon> ADD TO CART
-        </button>
-        <button *ngIf = "instalationIns" ion-button color= "#E2E0DF" icon-left block (click)="installationInstructions()">
-          Installation Instructions</button>
-        <p>SKU : {{product.sku}}</p>
+        <ion-col>
+          <ion-row>
+            <ion-col *ngIf = "product.force_sell_product_info">
+              <p>This will also add the following products to your cart:</p>
+              <p> {{product.force_sell_product_info.product_name}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+
 <!-- Tabs -->
         <div padding>
           <ion-segment [(ngModel)]="header">
@@ -96,7 +119,7 @@
               Description
             </ion-segment-button>
             <ion-segment-button style="color: red" value="additionalInfo">
-              Additional Information
+              Additional Info
             </ion-segment-button>
               <ion-segment-button style="color: red" value="review">
               Review
@@ -125,7 +148,7 @@
                           <span *ngFor="let option of att.options"> {{ option }}</span>
                         </ion-col>
                       </ion-row>
-                    </ion-grid>
+                  </ion-grid>
                 </ion-card-content>
             </ion-card>  
           </ion-list>
@@ -133,5 +156,5 @@
             <h3>Review</h3>         
             </ion-list>
         </div> <!-- Tabs end here -->
-    </ion-card>
+    <!-- </ion-card> -->
 </ion-content>

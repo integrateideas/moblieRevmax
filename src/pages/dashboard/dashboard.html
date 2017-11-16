@@ -17,11 +17,12 @@
 
 
 <ion-content *ngIf= "products">
+  
     <ng-container>
       <ion-grid>
           <ion-row *ngFor="let product of products">
             <ion-col width-50>
-                <img src="{{product.image.src }}" (click)= 'showProductDetail(product.id, product.name)'>
+                <img src="{{product.image.src }}" (click)= 'showProductDetail(product)'>
             </ion-col>
           </ion-row>
         </ion-grid>

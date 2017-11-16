@@ -15,7 +15,7 @@
         </span>
         <ion-list *ngIf="isLevel1Shown('idx'+i) && p.children !== undefined" >
           <ion-item color="dark"  *ngFor="let s of p.children; let i2=index" text-wrap tappable (click)="toggleLevel2('idx'+i+'idx'+i2)" [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+i2)}">
-            <span menuToggle *ngIf="(s.children === undefined)" tappable (click) ="openPage(s.title,s.object_id, s.attr)">
+            <span menuToggle *ngIf="(s.children === undefined)" tappable (click) ="openPage(s)">
               {{s.title}}
               <ion-icon color="success" item-right *ngIf ="s.children !== undefined" [name]="isLevel2Shown('idx'+i+'idx'+i2)  ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
             </span>
@@ -25,7 +25,7 @@
             </span>
             <ion-list *ngIf="isLevel2Shown('idx'+i+'idx'+i2) && s.children !== undefined">
               <ion-item color="dark" *ngFor="let m of s.children" text-wrap>
-                <span menuToggle tappable (click)="openPage(m.title , m.object_id, m.attr)">
+                <span menuToggle tappable (click)="openPage(m)">
                    {{m.title}}
                 </span>
                

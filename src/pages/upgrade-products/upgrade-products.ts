@@ -48,7 +48,7 @@ export class UpgradeProductsPage {
     this.Revmax.getDataSubject.subscribe((val)=>{
       console.log('in subs of product detail');
       this.allProducts = val.allProducts; 
-      console.log(val.allProducts);      
+      console.log(this.allProducts);      
     });
   
    console.log('here is the array data');

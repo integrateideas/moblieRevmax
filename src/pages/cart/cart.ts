@@ -21,6 +21,8 @@ import { AppConfigurationProvider as AppConfig } from '../../providers/configura
   templateUrl: 'cart.html',
 })
 export class CartPage {
+  cartString: string;
+  quantity: any;
   cartItems: any[] = [];
   total: any;
   showEmptyCartMessage: boolean = false;
@@ -39,6 +41,9 @@ export class CartPage {
               if(this.cartItems.length > 0){
                 this.cartItems.forEach( (item, index)=> {
                   this.total = this.total + (item.product.price * item.quantity)
+                  if (item.product.force_sell_product_info){
+                    this.total = this.total + (item.product.force_sell_product_info.product_price * item.quantity);
+                  }
                 })
         
               } else {
@@ -61,6 +66,9 @@ export class CartPage {
     this.storage.set("cart", this.cartItems).then( ()=> {
 
       this.total = this.total - (price * quantity);
+      if (item.product.force_sell_product_info) {
+        this.total = this.total - (item.product.force_sell_product_info.product_price * quantity);
+      }
 
     });
 
@@ -69,23 +77,60 @@ export class CartPage {
     }
     
   }
+
+  addQuantity(item, qty){
+    console.log(item);
+    this.storage.get("cart").then((data) => {
+      for (let i = 0; i < data.length; i++) {
+        
+        if (item.product.id == data[i].product.id) {
+          this.total = parseFloat(this.total) - parseFloat(data[i].amount);
+          console.log("Product is already in the cart");
+          console.log(this.total);
+          data[i].quantity = qty;
+          delete data[i].amount;
+          data[i].amount = parseFloat(data[i].product.price) * parseFloat(data[i].quantity);
+          this.total = parseFloat(this.total) + parseFloat(data[i].amount);
+          console.log(this.total);
+          if (item.product.force_sell_product_info) {
+            console.log("in if");
+            this.total = this.total - (item.product.force_sell_product_info.product_price * data[i].quantity);
+            console.log(item.product.force_sell_product_info.product_price);
+            console.log(qty);
+            this.total = this.total + (item.product.force_sell_product_info.product_price * qty);
+            console.log(this.total);
+          }
+        }
+      }
+
+      this.storage.set("cart", data).then(() => {
+        console.log("Quantity Updated");
+        console.log(data);
+      })
+     
+    })
+  }
     
   closeModal(){
     this.viewCtrl.dismiss();
   }
   
   checkout(){
-    
-    this.appConfig.checkout(this.cartItems).subscribe((response) => {
-     
-      console.log('response of checkout');
-      console.log(response);
-    },
-    (error)=> {
-      console.log('in error');          
-      console.log('error in getting response of checkout');
-      console.log(error);
-      
-    });
+    console.log("in checkout");
+    this.storage.get("cart").then((data) => {
+      for (let i = 0; i < data.length; i++) {
+        if(data[i].product){
+          delete data[i].product;
+          delete data[i].amount;
+        }
+      }
+      console.log(data);
+      this.cartString = JSON.stringify(data);
+
+      // let modified = delete data.product;
+      // console.log(modified);
+      // this.cartString = JSON.stringify(data);
+      // console.log(this.cartString);
+    })
   }
 }/* Class ends here */

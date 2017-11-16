@@ -87,25 +87,43 @@ export class AppConfigurationProvider {
 
   checkout(cart){
     console.log(cart);
-  
-
-    // const body = [
-    //   cart.forEach( (data, index)=> {
-    //     if(data.product){
-    //       delete data.product;
-    //     }
-    //   })
-    // ];
-
-
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
     let options = new RequestOptions({ headers: headers });
-    const body = [cart];
+    // options.withCredentials = true;
+    const body = cart;
     return this.http.post(this.wordpressStagingUrl+'/wp-json/mycart/v1/latest-data',body)
     .map((response) => response.json());
   }
 
+  filterProducts(productCat, attResponse) {
+    // http://revmax.twinspark.co/wp-json/instant/v1/search?product_cat=combo-kit&pa_make=ford
+    if(attResponse == null){
+      return this.http.get(this.wordpressStagingUrl + '/wp-json/instant/v1/search?product_cat=' + productCat+ '&')
+        .map((response) => response.json());
+    }else{
+      console.log('I am getting this attribute response');
+      console.log(attResponse);
+      console.log(typeof attResponse)
+    
+      var search = ""
+      Object.keys(attResponse).forEach(function (key) {
+        console.log('In for each');
+        search = search+'&' + key + '=' + attResponse[key];
+        console.log(key, attResponse[key]);
+
+      });
+
+      console.log('Final search');
+      console.log(search);
+      return this.http.get(this.wordpressStagingUrl + '/wp-json/instant/v1/search?product_cat=' + productCat +search)
+        .map((response) => response.json());
+    
+    }
 
   }
+
+
+  }
+ 
