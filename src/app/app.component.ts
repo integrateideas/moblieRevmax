@@ -37,21 +37,10 @@ export class MyApp {
 
   openPage(category) {
     console.log('here in open page');
-    console.log(category);
-    delete category.id
-    category.id = category.object_id;
-    category.slug = category.attr;
-    category.name = category.title;
-    console.log("aafter modifying category");
-    console.log(category);
     this.nav.setRoot('product-category',{
       'category': category,
       'slug': category.attr,
       'catId': category.object_id,
-
-      //  'category': category,
-      // 'page': category.title,
-      // 'slug': category.attr
     });
  
   }

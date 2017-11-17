@@ -18,16 +18,18 @@
     
       <ion-navbar >
         <ion-title style= "white-space: normal" *ngIf= "product">{{product.categories[0].name}}</ion-title>
+        <ion-buttons end>
+          <button ion-button icon-only (click)="openCart()"><ion-icon name="cart"></ion-icon></button>
+        </ion-buttons>
       </ion-navbar>
     
     </ion-header>
 
 
 <ion-content scroll="false" has-header="true" padding="true" *ngIf="product">
-    <ion-fab style="top: 5px;" right top edge (click)="openCart()">
-        <button style="width: 40px; height:40px" ion-fab color="danger"><ion-icon name="cart"></ion-icon></button>
-    </ion-fab>
-
+<!-- <ion-fab style="top: 5px;" right top edge (click)="openCart()">
+  <button style="width: 40px; height:40px" ion-fab color="danger"><ion-icon name="cart"></ion-icon></button>
+</ion-fab> -->
     <ion-card>
       <ion-slides autoplay="4000" loop="true">
           <ion-slide *ngFor="let image of product.images">
@@ -57,9 +59,9 @@
       </ion-card-content> 
     </ion-card>     
         
-    <button ion-button icon-only (click)="installationInstructions()">
+    <!-- <button ion-button icon-only (click)="installationInstructions()">
         <ion-icon name="book"></ion-icon>
-      </button>
+      </button> -->
 
       
           <!-- <iframe src="http://wallpaperswide.com/railway-wallpapers.html"></iframe> -->

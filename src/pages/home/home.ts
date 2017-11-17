@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import { RevmaxProvider as Revmax } from '../../providers/revmax';
 import { LoadingController } from 'ionic-angular';
 import { PopoverController } from 'ionic-angular';
+import { App } from 'ionic-angular';
 
 @IonicPage(
   {
@@ -29,6 +30,7 @@ export class HomePage {
   attResponse: Array<any> = [];
   checkIfNoProducts :boolean= false;
   constructor(public navCtrl: NavController, public navParams: NavParams,public Revmax: Revmax, public loadingCtrl: LoadingController,
+    public app: App,         
     public popoverCtrl: PopoverController) {
       this.showProducts();
       console.log("in constructor of home");
@@ -73,6 +75,7 @@ export class HomePage {
   showProductDetail(productId, name){
     console.log('home navigation content. Name should be there');
     console.log(name);
+    // this.app.getRootNav().push('product-detail', { id: productId, /* productCat: this.productCat, */ })
     this.navCtrl.push('product-detail',{id: productId, /* productCat: this.productCat, */});
   }
 
@@ -102,7 +105,7 @@ export class HomePage {
     // }
     let popover = this.popoverCtrl.create('search-products', {
       // 'productCat': this.searchCat,
-      'category': this.catData,
+      'category': this.catId,
       'attResponse': this.attResponse ? this.attResponse :[],
     });
     popover.onDidDismiss(data => {

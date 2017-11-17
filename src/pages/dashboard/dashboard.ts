@@ -43,16 +43,10 @@ export class DashboardPage {
   }
 
   showProductDetail(product){
-
     this.navCtrl.setRoot('product-category', {
       'category': product,
       'slug': product.slug,
       'catId': product.id
-
-      //  'category': category,
-      // 'page': category.title,
-      // 'catId': category.object_id,
-      // 'slug': category.attr
     });
   }
   

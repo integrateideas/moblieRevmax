@@ -7,6 +7,7 @@ import { HttpModule } from '@angular/http';
 import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { RevmaxProvider } from '../providers/revmax';
 import { WooApiModule } from 'ng2woo';
@@ -32,6 +33,9 @@ const WooCommerceConfig = {
     HttpModule,
     WooApiModule.forRoot(WooCommerceConfig),
     IonicStorageModule.forRoot()
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   bootstrap: [IonicApp],
   entryComponents: [

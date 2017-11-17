@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { HomePage } from './home';
-import { RevmaxProvider } from '../../providers/revmax';
-import { WooApiModule } from 'ng2woo';
+// import { RevmaxProvider } from '../../providers/revmax';
+// import { WooApiModule } from 'ng2woo';
 
 // const WooCommerceConfig = {
 //   url:   'https://revmax.twinspark.co', 
@@ -18,9 +18,9 @@ import { WooApiModule } from 'ng2woo';
     IonicPageModule.forChild(HomePage),
     // WooApiModule.forRoot(WooCommerceConfig)
   ],
-  providers: [
-    RevmaxProvider,
-    WooApiModule
-  ]
+  // providers: [
+  //   RevmaxProvider,
+  //   WooApiModule
+  // ]
 })
 export class HomePageModule { }

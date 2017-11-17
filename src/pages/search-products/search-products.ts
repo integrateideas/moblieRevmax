@@ -25,11 +25,15 @@ export class SearchProductsPage {
   products: any;
   recievedData: any;
   attributeOptions: Array<any> = [];
-  attributeResponse: any;
+  actualProductCategories: any;
+  attributeResponse: {};
   attributes: any;
-  productCategories: any;
+  productCategories: Array<any> =[];
   productCatResponse:any;
   productCatResponseName: any;
+  productCatSlug:any;
+  productCatName: any;
+  refreshFlag : boolean;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -41,6 +45,23 @@ export class SearchProductsPage {
     public app: App
     ) {
     this.productCategories = this.Revmax.searchedCategories;
+    console.log('these are the categories from provider');
+    console.log(this.productCategories);
+    // this.actualProductCategories.forEach((singleProduct, index) => {
+      
+    //   var data = {
+    //     id: singleProduct.id,
+    //     slug: singleProduct.slug,
+    //     name: singleProduct.name,
+
+    //   };
+    //   this.productCategories.push(data);
+   
+      
+    //   console.log("these are the modified categories");
+    //   console.log(this.productCategories);
+    // })
+    this.refreshFlag = true;
     this.productCatResponse = this.navParams.get("category");
     this.attributeResponse = this.navParams.get("attResponse");
     
@@ -55,15 +76,25 @@ export class SearchProductsPage {
 
 
   /* search result only for product category  */
-  getProductCategory(){
+  getProductCategory(data){
     console.log('In category function');
+    console.log("this is the event");
+    console.log(data);
     console.log(this.productCatResponse);
+    for (let i = 0; i < this.productCategories.length; i++) {
+      if (this.productCatResponse == this.productCategories[i].id) {
+        this.productCatSlug = this.productCategories[i].slug;
+        this.productCatName = this.productCategories[i].name;
+
+      }
+    }
+
     if (this.productCatResponse){
           this.viewCtrl.dismiss().then(() => {
             this.app.getRootNav().setRoot('product-category', {
               'category': this.productCatResponse,
-              'slug': this.productCatResponse.slug,
-              'catId': this.productCatResponse.id
+              'slug': this.productCatSlug,
+              'catId': this.productCatResponse
             });
           });
         
@@ -73,18 +104,25 @@ export class SearchProductsPage {
 
   getProductAttribute(){
     if (typeof this.productCatResponse != "undefined" && this.productCatResponse != null){
+      for (let i = 0; i < this.productCategories.length; i++) {
+        if (this.productCatResponse == this.productCategories[i].id) {
+          this.productCatSlug = this.productCategories[i].slug;
+          this.productCatName = this.productCategories[i].name;
+        }
+      }
       console.log('here is the attribute response');
       console.log(this.attributeResponse);
       
-      this.appConfig.filterProducts(this.productCatResponse.slug, this.attributeResponse)
+      this.appConfig.filterProducts(this.productCatSlug, this.attributeResponse)
         .subscribe((response) => {
           console.log('searched response');
           console.log(response);
           this.recievedData = response;
           if (this.recievedData != null){
             this.recievedData.attResponse = this.attributeResponse;
-            this.recievedData.catTitle = this.productCatResponse.name;
+            this.recievedData.catTitle = this.productCatSlug;
           }
+          console.log(this.recievedData);
           this.viewCtrl.dismiss(this.recievedData);
         },
         (error) => {
@@ -113,6 +151,15 @@ export class SearchProductsPage {
       });
       alert.present();
     }
+  }
+
+  refresh(){
+    this.refreshFlag = false;
+    console.log("before empty");
+    console.log(this.attributeResponse);
+    console.log("In refresh");
+    this.attributeResponse = {} ;
+    console.log(this.attributeResponse)
   }
 
   

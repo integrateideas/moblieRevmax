@@ -8,27 +8,35 @@
 
   <ion-navbar>
     <ion-title>Search</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="refresh()">
+            <ion-icon name="refresh-circle"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content>
+ 
   <br>
   <br>
   <br>
-  <br>
-      <ion-item>
+  <pre></pre>
+      <ion-item *ngIf = "productCatResponse">
         <ion-label stacked>Product Categories</ion-label>
         <ion-select [(ngModel)]="productCatResponse" name="productCat" (ngModelChange)="getProductCategory($event)">
-          <ion-option *ngFor="let cat of productCategories" [value]="cat">{{cat.name}}</ion-option>
+          <ion-option *ngFor="let cat of productCategories" [value]="cat.id" >{{cat.name}}</ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item *ngFor="let att of attributes let i = index">
         <ion-label stacked >{{ att.name}}</ion-label>
-        <ion-select [(ngModel)]="attributeResponse[att.slug]" multiple="false" (ngModelChange)="getProductAttribute()">
-          <ion-option *ngFor="let option of attributeOptions[att.id]" [value]="option.slug">{{option.name}}</ion-option>
+        <ion-select *ngIf= "refreshFlag" [(ngModel)]="attributeResponse[att.slug]" multiple="false" (ngModelChange)="getProductAttribute()">
+          <ion-option *ngFor="let option of attributeOptions[att.id]"  [value]="option.slug">{{option.name}}</ion-option>
+        </ion-select>
+        <ion-select *ngIf="refreshFlag== false" [(ngModel)]="attributeResponse[att.slug]" multiple="false" (ngModelChange)="getProductAttribute()">
+          <ion-option *ngFor="let option of attributeOptions[att.id]" [value]="">{{option.name}}</ion-option>
         </ion-select>
       </ion-item>
 
