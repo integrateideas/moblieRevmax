@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { HomePage } from './home';
-// import { RevmaxProvider } from '../../providers/revmax';
+import { RevmaxProvider } from '../../providers/revmax';
 // import { WooApiModule } from 'ng2woo';
 
 // const WooCommerceConfig = {
@@ -18,9 +18,9 @@ import { HomePage } from './home';
     IonicPageModule.forChild(HomePage),
     // WooApiModule.forRoot(WooCommerceConfig)
   ],
-  // providers: [
-  //   RevmaxProvider,
-  //   WooApiModule
-  // ]
+  providers: [
+    RevmaxProvider,
+    // WooApiModule
+  ]
 })
 export class HomePageModule { }

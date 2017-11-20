@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import {CustomHttpProvider  } from './custom-http';
-import { Headers, Response, Http, RequestOptions } from '@angular/http';
+import { Headers, Http, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
 import { Storage } from '@ionic/storage';
 
 /*
@@ -86,12 +85,6 @@ export class AppConfigurationProvider {
   }
 
   checkout(cart){
-    console.log(cart);
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-    let options = new RequestOptions({ headers: headers });
-    // options.withCredentials = true;
     const body = cart;
     return this.http.post(this.wordpressStagingUrl+'/wp-json/mycart/v1/latest-data',body)
     .map((response) => response.json());
