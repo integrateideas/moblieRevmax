@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { DomSanitizer } from '@angular/platform-browser';
 
 /**
  * Generated class for the InstallationInstructionsPage page.
@@ -21,7 +22,8 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 export class InstallationInstructionsPage {
   instructions: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
+    public sanitizer: DomSanitizer) {
     this.instructions = this.navParams.get("instructions");
     console.log('these are instructions');
     console.log(this.instructions);
@@ -29,10 +31,6 @@ export class InstallationInstructionsPage {
 
   closeModal(){
     this.viewCtrl.dismiss();
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad InstallationInstructionsPage');
   }
 
 }

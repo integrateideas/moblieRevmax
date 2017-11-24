@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {CustomHttpProvider  } from './custom-http';
-import { Headers, Response, Http, RequestOptions } from '@angular/http';
+import { Headers, Http, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
+import { Storage } from '@ionic/storage';
 
 /*
   Generated class for the ConfigurationProvider provider.
@@ -13,10 +13,10 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class AppConfigurationProvider {
   //Enviornment variables
-  wordpressStagingUrl:string="http://revmax.twinspark.co";
-  wordpressLiveUrl:string="http://revmax.twinspark.co";
+  wordpressStagingUrl:string="https://revmax.twinspark.co";
+  // wordpressLiveUrl:string="http://revmax.twinspark.co";
   
-  constructor(  public http: CustomHttpProvider, private customhttp: Http ) {
+  constructor(  public http: CustomHttpProvider, private customhttp: Http, public storage: Storage) {
     
   }
   
@@ -49,8 +49,14 @@ export class AppConfigurationProvider {
 
   /* Add product to cart with no variation.*/
     addToCart(productCategory, productId){
-      return this.http.get(this.wordpressStagingUrl+'/product-category/'+productCategory+'/?add-to-cart='+productId)
-      .map((response) => response.json());
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/x-www-form-urlencoded');
+      headers.append('Accept', 'application/json');
+      let options = new RequestOptions({ headers: headers });
+      let url = this.wordpressStagingUrl+'/product-category/'+productCategory+'/?add-to-cart='+productId;
+      
+      return this.http.get(url,options)
+      .map((response) => response);
       /* Example */
     // <a href="http://revmax.twinspark.co/product-category/performance-valve-bodies/performance-valve-bodies-ford-diesel/?add-to-cart=4849">Add to Cart</a>
   }
@@ -78,5 +84,39 @@ export class AppConfigurationProvider {
     .map((response) => response.json());
   }
 
+  checkout(cart){
+    const body = cart;
+    return this.http.post(this.wordpressStagingUrl+'/wp-json/mycart/v1/latest-data',body)
+    .map((response) => response.json());
+  }
+
+  filterProducts(productCat, attResponse) {
+    // http://revmax.twinspark.co/wp-json/instant/v1/search?product_cat=combo-kit&pa_make=ford
+    if(attResponse == null){
+      return this.http.get(this.wordpressStagingUrl + '/wp-json/instant/v1/search?product_cat=' + productCat+ '&')
+        .map((response) => response.json());
+    }else{
+      console.log('I am getting this attribute response');
+      console.log(attResponse);
+      console.log(typeof attResponse)
+    
+      var search = ""
+      Object.keys(attResponse).forEach(function (key) {
+        console.log('In for each');
+        search = search+'&' + key + '=' + attResponse[key];
+        console.log(key, attResponse[key]);
+
+      });
+
+      console.log('Final search');
+      console.log(search);
+      return this.http.get(this.wordpressStagingUrl + '/wp-json/instant/v1/search?product_cat=' + productCat +search)
+        .map((response) => response.json());
+    
+    }
 
   }
+
+
+  }
+ 

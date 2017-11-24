@@ -13,27 +13,34 @@ import {Observable} from 'rxjs/Observable';
 */
 @Injectable()
 export class RevmaxProvider {
-  getDataSubject:Subject<any>; 
+  searchedCategories: any;
+  getDataSubject: Subject<any>; 
+  attributeOptions: Array<any> = [];
+  allAttributes: Array<any> = [];
   wooCommerceStagingUrl:string="http://revmax.twinspark.co";
-  wooCommerceLiveUrl:string="http://revmax.twinspark.co";
+  wooCommerceLiveUrl:string="https://revmax.twinspark.co";
   wooCommerceConsumerKey:string="ck_5ecf43a297b5341dfb68c4ba5f7e83db56125b19";
   wooCommerceConsumerSecret:string="cs_6387cb6a55c87e8cd6223fbca39a92324dbfd013";
   wooCommerceVersion:string="wc/v1";
+  wooCommerceQueryStringAuth : true;
+  // Use false when need test with self-signed certificates, default is true (optional)
+ // encoding: 'utf8', // Encode, default is 'utf8' (optional)
   
   products:any = {};
   // productInfo:any = false;
   constructor(  public http: CustomHttpProvider, private woo: WooApiService) {
-
+    this.fetchAttributes();
+    this.fetchSearchedCategories();
     this.getDataSubject = new Subject();
-    
   }
   fetchCategoryProducts(catId){
     if(!catId){
       return false;
     }
     console.log('In category products');
-    return this.woo.fetchItems('products?category='+catId+'&per_page=10')
+    return this.woo.fetchItems('products?category='+catId)
         .then((products) => {
+          console.log(products);
           this.products.productCategory = products;
           this.gotData();
         }
@@ -64,9 +71,11 @@ export class RevmaxProvider {
   }
   
   
+  /* For dashboard page */
   fetchCategories(){
     console.log('In categories');
     this.woo.fetchItems('products/categories?include=[667,303,623,525,390,469,327,617,662]&orderby=include')
+    // this.woo.fetchItems('products/categories?per_page=30')
       .then(products => {
         console.log(products);
         this.products.allCategories = products;
@@ -75,22 +84,94 @@ export class RevmaxProvider {
       }
     )
       .catch(error => console.log(error));
-  }  
+  }
   
-  /* For dashboard page */
+  /* For search product categories */
+  fetchSearchedCategories() {
+    console.log('In categories');
+    this.woo.fetchItems('products/categories?per_page=30')
+      .then(products => {
+        console.log(products);
+        this.products.searchedCategories = products;
+        this.searchedCategories = products;
+        this.gotData();
+        console.log(this.products.allCategories);
+      }
+      )
+      .catch(error => console.log(error));
+  }
   
+  /* Fetch upsell products */
   fetchProducts(upsellIds){  
     console.log('all products');
     this.woo.fetchItems('products?include='+upsellIds)
-    // this.woo.fetchItems('products/attributes/36')
       .then(products => { 
         this.products.allProducts = products;
         this.gotData();
-        console.log('Getting upsell data from provider')
         console.log(this.products.allProducts);
       }
     )
       .catch(error => console.log(error));
   }
+
+  /* Fetch all attributes for search page*/
+  fetchAttributes(){
+    console.log('all products attributes');
+    this.woo.fetchItems('products/attributes')
+      // this.woo.fetchItems('products/attributes/36')
+      .then(attributes => {
+        this.allAttributes = attributes;
+        // this.fetchAttributesOptions();
+        this.attributeOptions =[];
+        this.allAttributes .forEach(element => {
+          this.fetchAttributesOptions(element.id);
+        });
+        // this.gotData();
+        console.log(this.products.allAttributes);
+      }
+      )
+      .catch(error => console.log(error));
+  }
+
+  /* Fetch all attribute terms for all attributes for search page*/
+  fetchAttributesOptions(id){
+    this.woo.fetchItems('products/attributes/' + id +'/terms?per_page=100')
+        .then(options => {
+          this.attributeOptions[id] = options; 
+        }
+        )
+        .catch(error => console.log(error));
+    }
+
+    /* result for search attributes*/
+  // searchResult(catId, searchArray) {
+  //   let url = 'products?category=' + catId;
+
+  //   var search = '';
+  //   if(searchArray.length != 0){
+  //     searchArray.forEach(element => {
+  //       search = search + ',' + element.replace(/ /g, '');
+  //       // url = url + '&search=' + element;  
+  //     });
+  //   }
+  //   url = url + '&search=' + search;
+  //   console.log(url);
+  //   this.woo.fetchItems(url)
+  //     // this.woo.fetchItems('products/categories?per_page=30')
+  //     .then(products => {
+  //       console.log(products);
+  //       this.products.searchResult = products;
+  //       console.log("this is the final search result");
+  //       console.log(this.products.searchResult);
+  //       this.gotData();
+  //       // if (this.products.searchResult.length>0 ){
+  //       // }
+  //     }
+  //     )
+  //     .catch(error => console.log(error));
+  // }
+
+
+  
 
 }

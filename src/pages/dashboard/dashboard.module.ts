@@ -1,30 +1,14 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { DashboardPage } from './dashboard';
-import { RevmaxProvider } from '../../providers/revmax';
-import { WooApiModule } from 'ng2woo';
-// import { VideoPlayer } from '@ionic-native/video-player';
 
-const WooCommerceConfig = {
-  url:   'http://revmax.twinspark.co', 
-  consumerKey:    'ck_5ecf43a297b5341dfb68c4ba5f7e83db56125b19',
-  consumerSecret:  'cs_6387cb6a55c87e8cd6223fbca39a92324dbfd013',
-  wpAPI: true,
-  version: 'wc/v1'
-};
 @NgModule({
   declarations: [
-    DashboardPage,
-    
+    DashboardPage,    
   ],
   imports: [
     IonicPageModule.forChild(DashboardPage),
-    WooApiModule.forRoot(WooCommerceConfig),
   ],
-  providers: [
-    RevmaxProvider,
-    WooApiModule,
-    // VideoPlayer
-  ]
+ 
 })
 export class DashboardPageModule {}

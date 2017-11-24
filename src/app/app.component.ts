@@ -3,6 +3,8 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AppConfigurationProvider as AppConfig } from '../providers/configuration/app-configuration';
+import { IonicApp, App, MenuController } from 'ionic-angular';
+
 
 @Component({
   templateUrl: 'app.html'
@@ -16,7 +18,9 @@ export class MyApp {
 
   pages:any;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,private appConfig: AppConfig) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,private appConfig: AppConfig,
+    private _app: App, private _ionicApp: IonicApp, private _menu: MenuController
+  ) {
     this.parseMenu();
     this.initializeApp();
   }
@@ -25,21 +29,20 @@ export class MyApp {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+      // this.setupBackButtonBehavior (); /* Back button compatability */
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
   }
 
-  openPage(page,categoryId,slug) {
+  openPage(category) {
     console.log('here in open page');
-    this.nav.setRoot('shop',{
-      'page':page,
-      'catId':categoryId,
-      'pageName':slug
+    this.nav.setRoot('product-category',{
+      'category': category,
+      'slug': category.attr,
+      'catId': category.object_id,
     });
-    console.log('to home page');
-    console.log('title')
-    console.log(slug);
+ 
   }
   parseMenu(){
     this.appConfig.fetchMenuItems()
@@ -90,5 +93,6 @@ isLevel2Shown(idx) {
 helpfulLinks(){
   this.nav.setRoot('helpful-links');
 }
+
 
 }

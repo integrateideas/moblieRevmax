@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { RevmaxProvider as Revmax } from '../../providers/revmax';
 
 
+
 /**
  * Generated class for the DashboardPage page.
  *
@@ -21,15 +22,15 @@ import { RevmaxProvider as Revmax } from '../../providers/revmax';
   templateUrl: 'dashboard.html',
 })
 export class DashboardPage {
+  searchCat: any;
   products: any;
   pages: any;
   response: any;
   product: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public Revmax: Revmax,
-            
+  constructor(public navCtrl: NavController, public navParams: NavParams, public Revmax: Revmax,          
     ) {
-      this.dashboard();
+    this.dashboard();
   }
 
   dashboard(){
@@ -41,18 +42,14 @@ export class DashboardPage {
       });
   }
 
-  showProductDetail(id, name){
-    // this.Revmax.products = {};
-    // this.Revmax.fetchCategoryProducts(id);
-    // this.Revmax.getDataSubject.subscribe((val)=>{
-    //   this.products = val.productCategory;      
-    
-    //   });
-    this.navCtrl.setRoot('shop',{
-      'catId':id,
-      'page' : name
+  showProductDetail(product){
+    this.navCtrl.setRoot('product-category', {
+      'category': product,
+      'slug': product.slug,
+      'catId': product.id
     });
   }
+  
   
 
 }

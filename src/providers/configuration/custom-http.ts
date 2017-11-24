@@ -42,8 +42,8 @@ export class CustomHttpProvider {
       requestOptions.headers = new Headers();
     }
 
-    requestOptions.headers.append('Content-Type','application/json');
-    requestOptions.headers.append('Accept','application/json');
+    // requestOptions.headers.append('Content-Type','application/json');
+    // requestOptions.headers.append('Accept','application/json');
     return requestOptions;
   
   }
