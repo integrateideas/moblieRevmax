@@ -1,0 +1,96 @@
+<nav *ngIf = "pages" class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Revmax</a>
+      <!-- <span class = "pull-right"><i class="fa fa-shopping-cart"></i></span> -->
+      <button class = "pull-right" style="margin-top: 12px" (click)="openModel(cart)">
+        <span>
+          <i class="fa fa-shopping-cart"></i>
+        </span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li *ngFor="let p of pages; let i=index" class="dropdown">
+          <a *ngIf="p.children" class="dropdown-toggle" data-toggle="dropdown">{{p.title}}
+            <!-- <span class="caret"></span> -->
+          </a>
+          <ul *ngIf="p.children" class="dropdown-menu">
+            <li *ngFor="let s of p.children; let i2=index">
+              <a class="dropdown-toggle" data-toggle="dropdown"  [routerLink]="['/product-category',s.attr,s.object_id]">{{s.title}}
+                <!-- <span class="caret"></span> -->
+              </a>
+              <ul *ngIf ="s.children" class="dropdown-submenu">
+                <li *ngFor="let m of s.children; let i3=index" [routerLink]="['/product-category',m.attr,m.object_id]">
+                  {{m.title}}
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Modal for Cart -->
+<ng-template #cart>
+  <div class="modal-header">
+    <h4 class="modal-title">Your Cart</h4>
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngIf = "cartData" class="modal-body">
+    <ng-container *ngFor="let item of cartData; let i = index">
+      <div class="card">
+        <div class = "row">
+          <div class = "col-xs-4">
+            <img class="img-thumbnail" style="width: 80px !important; height: 80px !important;" src="{{item.image ? item.image : ''}}">
+          </div>
+          <div class = "col-xs-8">
+            <h5 style="color:red">{{ item.name }}</h5>
+            <!-- <ng-container *ngIf = "item.variationArray">
+              <li *ngFor="let obj of item.variationArray">{{obj}}</li>
+            </ng-container> -->
+            <!-- <p style="margin-top: 16px">Quantity : {{item.quantity}}</p> -->
+            Quantity : 
+            <i class="fa fa-caret-up" aria-hidden="true" (click) ="updateQuantity(item,'add')"></i>
+             {{item.quantity}}
+            <i class="fa fa-caret-down" aria-hidden="true" (click) ="updateQuantity(item,'sub')"></i>
+            
+            <p>${{item.quantity * item.price }}.00</p>
+            <p style="color:blue " (click)="removeFromCart(item, i)">Remove</p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf = "item.forcell_products" class = "card">
+        <div class="row">
+          <div class="col-xs-4">
+            <img class="img-thumbnail" style="width: 80px !important; height: 80px !important;" src="{{item.forcell_products.product_image}}">
+          </div>
+          <div class="col-xs-8">
+            <h5 style="color:red">{{ item.forcell_products.product_name}}</h5>
+            <p>Linked to {{item.name}}</p>
+          <p style="margin-top: 16px">Quantity : {{item.quantity}}</p>
+          <br>
+          <p>${{item.forcell_products.product_price * item.quantity}}.00</p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    
+    <span class = "pull-right">TOTAL : <b>${{ total }}.00 </b></span>
+    <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Close</button>
+  </div>
+</ng-template>
+
+<router-outlet></router-outlet>
+

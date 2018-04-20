@@ -1,0 +1,15 @@
+<div class="spinner" *ngIf="spinnerEnabled"></div>
+<div *ngIf = "products && !spinnerEnabled" class="container">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class = "row">
+        <div class = "col-xs-6" *ngFor="let product of products">
+            <img class="img-thumbnail" style="width:100%" src="{{product.images[0].src }}" [routerLink]="['/product',product.slug,product.id]">
+          <p style="color: red" tappable [routerLink]="['/product',product.slug,product.id]">{{product.name}}</p>
+          <p [innerHTML]="product.price_html" [routerLink]="['/product',product.slug,product.id]"></p>
+          <p *ngIf="!product.price_html">$ {{product.price}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

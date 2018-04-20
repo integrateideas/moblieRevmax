@@ -1,0 +1,220 @@
+<div class="spinner" *ngIf="spinnerEnabled"></div>
+<div *ngIf = "product && !spinnerEnabled" class = "container">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <strong>{{product.name}}</strong>
+    </div>
+    <div class="panel-body">
+      <img class="img-thumbnail" style="width:100%" src="{{product.images[0].src }}">
+      <div *ngIf="product.upsell_ids.length > 0" class="wrapper">  
+        <!-- To DO Upgrade products --> 
+        <button class = "btn btn-primary"  (click)="openModel(upgrade)">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i> Upgrades & Accessories
+        </button>
+      </div>
+
+      
+      <div class = "container">
+        <h6 style="color:red">{{product.name}}</h6>
+        <p [innerHTML]="product.price_html"></p>
+      </div>
+      <div *ngIf = "product.upsell_product_info" class = "panel panel-default">
+        <div class = "panel-body">
+          <ng-container *ngIf="product.upsell_product_info">
+            <ng-container *ngFor="let upsell of product.upsell_product_info">
+              <button *ngIf = "!checkUpsell[upsell.id]"  (click)="addedProduct($event.target, upsell)">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                 {{ 'Add $'+upsell.price+'('+upsell.name+')'}}
+              </button>
+              <button *ngIf="checkUpsell[upsell.id]"  (click)="removeProduct($event.target, upsell)">
+                <i class="fa fa-times" aria-hidden="true"></i>
+                {{ 'Remove $'+upsell.price+'('+upsell.name+')'}}
+                <span class = "pull right">
+                </span>
+              </button>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- TODO product variation -->
+      <!-- <div class = "panel panel-default">
+        <div class = "panel-body"> -->
+          <ng-container *ngFor="let att of product.attributes let i = index">
+            <div *ngIf="att.variation == true">
+              <div class = "card">
+                <div class = "card-body">
+                  <div class = "row">
+                    <div class = "col-xs-4">
+                      {{ att.name}}
+                    </div>
+                    <div class = "col-xs-8">
+                      <select [(ngModel)]="variationsData[att.slug_modified]" name="first" (ngModelChange)="getProductVariations()">
+                        <option *ngFor="let option of att.options" value="{{option}}">
+                           {{option}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+                <!-- <button (click)="print()">Click me</button> -->
+            </div>
+          </ng-container>
+          <ng-container *ngIf="updatedPrice">
+            <p [innerHTML]="updatedPrice"></p>
+          </ng-container>
+        <!-- </div>
+      </div> -->
+      <div class = "wrapper">
+        <button *ngIf = "product.upsell_product_info && selectedUpsellProducts.length == 0" class="btn btn-primary" [disabled] = "product.variations && product.variations.length > 1" (click)="openModel(selectUpgrade)">
+          <i class="fa fa-shopping-cart" aria-hidden="true"></i> ADD TO CART
+        </button>
+        <button *ngIf="selectedUpsellProducts.length && (selectedUpsellProducts.length < product.upsell_product_info.length)" class="btn btn-primary" [disabled] = "product.variations && product.variations.length > 1" (click)="openModel(addMoreUpgrades)">
+          <i class="fa fa-shopping-cart" aria-hidden="true"></i> ADD TO CART
+        </button>
+        <button *ngIf="product.upsell_product_info && (selectedUpsellProducts.length == product.upsell_product_info.length)" class="btn btn-primary" [disabled] = "product.variations && product.variations.length > 1"
+          (click)="addProductToStorage()">
+          <i class="fa fa-shopping-cart" aria-hidden="true"></i> ADD TO CART
+        </button>
+        <button *ngIf=" ! product.upsell_product_info || product.upsell_product_info.length == 0 "
+          class="btn btn-primary" (click)="addProductToStorage()" [disabled] = "product.variations && product.variations.length > 1">
+          <i class="fa fa-shopping-cart" aria-hidden="true"></i> ADD TO CART
+        </button>
+        
+        <!-- TODO Installation Instruction -->
+        <!-- <button *ngIf="product.installation_instruction" class = "btn btn-primary"> INSTALLATION INSTRUCTIONS</button> -->
+        <p>SKU : {{product.sku}}</p>
+      </div>
+      <div *ngIf="product.force_sell_product_info">
+        <p>This will also add the following products to your cart:</p>
+        <p> {{product.force_sell_product_info.product_name}}</p>
+      </div>
+
+      <div>
+        <tabset>
+          <tab heading="Description" id="tab1">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <p [innerHTML]="product.description"></p>
+              </div> 
+            </div>  
+          </tab>
+          <tab heading="Additional Info">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <!-- <div class = "row"> -->
+                  <!-- <ng-container *ngFor="let att of product.attributes"> -->
+                    <!-- <div class = "col-sm-2">
+                       <strong> {{ att.name}}</strong>
+                    </div>
+                    <div class = "col-sm-8">
+                      <ul *ngFor="let option of att.options">
+                        <li>
+                           {{ option }}
+                        </li>
+                      </ul>
+                    </div> -->
+                    <li *ngFor="let att of product.attributes">
+                      <span><strong> {{ att.name}}</strong></span>
+                        <span class = "pull-right">
+                          <ng-container *ngFor="let option of att.options">
+                            {{ option }}
+                          </ng-container>
+                        </span>
+                    </li>
+                  <!-- </ng-container> -->
+                <!-- </div> -->
+              </div>
+            </div>
+          </tab>
+          <tab heading="Review">
+            <div class="panel panel-default">
+              <div class="panel-body">
+            
+              </div>
+            </div>
+          </tab>
+        </tabset>
+      </div>
+      
+    </div> <!-- End Panel heading -->
+  </div>  <!-- End panel default -->
+</div> <!-- End container -->
+
+
+
+<!-- Modal for upgrade products -->
+<ng-template #upgrade>
+  <div class="modal-header">
+    <h4 class="modal-title">Upgrades & Accessories</h4>
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="panel panel-default">
+      <div *ngFor="let upsell of product.upsell_product_info"class="panel-body">
+          <div class="row">
+            <div class="col-xs-4">
+              <img class="img-thumbnail" style="width: 80px !important; height: 80px !important;" src="{{upsell.images[0] ? upsell.images[0].guid : '' }}">
+            </div>
+            <div class="col-xs-8">
+              {{upsell.name}}
+            </div>
+            <div class="col-xs-8" style="color:red">
+              $ {{upsell.price}}
+            </div>
+        
+            <div class="col-xs-8">
+              <button *ngIf ="checkUpsell[upsell.id]" (click)="removeProduct($event.target, upsell)">REMOVE
+              </button>
+              <button *ngIf="!checkUpsell[upsell.id]" (click)="addedProduct($event.target, upsell)">ADD TO CART
+              </button>
+            </div>
+          </div>
+      </div>
+    </div>  
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Close</button>
+  </div>
+</ng-template>
+
+<!-- Alert to select more upgrades -->
+<ng-template #selectUpgrade>
+  <div class="modal-body">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+         You haven't selected any upgrades. Please be aware that after orders are finalized, upgrades cannot be added.
+      </div>
+      <button class="btn btn-primary" (click)="modalRef.hide(); openModel(upgrade)">
+        Show upgrades
+      </button>
+      <button type="button" class="btn btn-outline-primary" (click)="modalRef.hide(); addProductToStorage()">No, Thanks</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Add More upgrades -->
+<ng-template #addMoreUpgrades>
+  <div class="modal-body">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        You haven't selected all the upgrades, you only have 24 hours after you purchase to make the decision.
+      </div>
+    </div>
+    <button class="btn btn-primary" (click)="modalRef.hide(); openModel(upgrade)">
+      Show upgrades
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="modalRef.hide(); addProductToStorage()">No, Thanks</button>
+  </div>
+  
+</ng-template>
