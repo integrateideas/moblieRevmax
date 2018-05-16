@@ -1,8 +1,0 @@
-select{
-    width: 100px;
-    text-overflow: ellipsis;
-}
-.item-text-wrap .col{
-    width: 33.33%;
-    text-align: center;
-}
