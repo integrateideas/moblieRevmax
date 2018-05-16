@@ -16,28 +16,31 @@ export class AppComponent {
   pages: any;
   modalRef: BsModalRef;
   showEmptyCartMessage: boolean = false;
+  checkCartFlag = true;
 
   constructor(public customService: CustomService, public modalService: BsModalService, public cartService: CartService) {
     this.parseMenu();
   }
 
   ngDoCheck() {
-    this.cartData = this.cartService.cartItems;
-    if(this.cartData) {
-      this.total = 0.0;
-      this.cartData.forEach((item, index) => {
-        console.log('In for each of cart');
-        console.log('total price before addition' + this.total);
-        console.log('amount before total' + item.amount);
-        this.total = this.total + item.amount;
-        console.log("this is the total price");
-        console.log(this.total);
-        if (item.forcell_products) {
-          this.total = this.total + (item.forcell_products.product_price * item.quantity);
-        }
-      });
-    } else {
-      this.showEmptyCartMessage = true;
+    if(this.checkCartFlag) {
+      this.cartData = this.cartService.cartItems;
+      if(this.cartData) {
+        this.total = 0.0;
+        this.cartData.forEach((item, index) => {
+          console.log('In for each of cart');
+          console.log('total price before addition' + this.total);
+          console.log('amount before total' + item.amount);
+          this.total = this.total + item.amount;
+          console.log("this is the total price");
+          console.log(this.total);
+          if (item.forcell_products) {
+            this.total = this.total + (item.forcell_products.product_price * item.quantity);
+          }
+        });
+      } else {
+        this.showEmptyCartMessage = true;
+      }
     }
   }
 
@@ -119,6 +122,72 @@ export class AppComponent {
       this.showEmptyCartMessage = true;
     }
 
-  }  
+  }
+  
+  onSubmit(form: any, e: any): void {
+    this.checkCartFlag = false;
+    //Note that I added 'e' and calling the event target's .submit()
+    for(let i= 0; i< this.cartData.length; i++) {
+      if (this.cartData[i].amount) {
+        delete this.cartData[i].amount;
+        delete this.cartData[i].forcell_products;
+        delete this.cartData[i].name;
+        delete this.cartData[i].image;
+        delete this.cartData[i].price;
+      }
+    }
+
+    this.cartData = JSON.stringify(this.cartData);
+    e.target.submit();
+    // this.checkCartFlag = true;
+  }
+
+
+  // checkout(e) {
+  //   console.log('hit');
+  //   // e.preventDefault();
+  //   console.log("in checkout");
+  //   this.storage.get("cart").then((data) => {
+  //     for (let i = 0; i < data.length; i++) {
+  //       if (data[i].amount) {
+  //         delete data[i].amount;
+  //         delete data[i].forcell_products;
+  //         delete data[i].name;
+  //         delete data[i].image;
+  //         delete data[i].price;
+  //       }
+  //     }
+  //     console.log(data);
+  //     this.cartString = JSON.stringify(data);
+  //     console.log(this.cartString);
+  //     // this.appConfig.emptyCart().subscribe((response) => {
+  //     //   console.log("cart is empty");
+  //     //   console.log(response);
+  //     // })
+
+  //   })
+  // }
+
+  // formSubmit() {
+  //   console.log("In form submit function");
+  //   this.storage.get("cart").then((data) => {
+
+  //     data = [];
+
+  //     this.storage.set("cart", data).then(() => {
+  //       console.log("Data is empty now");
+  //       // this.cartItems = data;
+  //       this.total = 0.00;
+  //       console.log(data);
+
+  //       let loader = this.loadingCtrl.create({
+  //         content: "Redirecting to cart...",
+  //         duration: 5000
+  //       });
+  //       loader.present();
+  //       this.viewCtrl.dismiss();
+  //     })
+  //   })
+  // }
  
 }

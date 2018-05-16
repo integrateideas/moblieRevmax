@@ -15,7 +15,7 @@
 
       
       <div class = "container">
-        <h6 style="color:red">{{product.name}}</h6>
+        <h6 style="color:red"><strong>{{product.name}}</strong></h6>
         <p [innerHTML]="product.price_html"></p>
       </div>
       <div *ngIf = "product.upsell_product_info" class = "panel panel-default">

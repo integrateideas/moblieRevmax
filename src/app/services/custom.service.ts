@@ -11,7 +11,6 @@ export class CustomService {
 
   fetchMenuItems() {
     return this.http.get(this.url + '/wp-json/wp-api-menus/v2/menus/2184');
-      // .map((response) => console.log('menu response'));
   }
 
   /* Fetch the product variation */
@@ -28,5 +27,25 @@ export class CustomService {
     let url = this.url + "/product/" + product + "/?wc-ajax=get_variation";
     return (this.customHttp.post(url, body.toString().replace(/ /g, ''), options)
       .map((response) => response.json()));
+  }
+
+  /* Use to filter products (on product page) */
+  filterProducts(productCat, attResponse) {
+    // http://revmax.twinspark.co/wp-json/instant/v1/search?product_cat=combo-kit&pa_make=ford
+    if (attResponse == null) {
+      return this.http.get(this.url + '/wp-json/instant/v1/search?product_cat=' + productCat + '&');
+    } else {
+      console.log('I am getting this attribute response');
+      var search = ""
+      Object.keys(attResponse).forEach(function (key) {
+        console.log('In for each');
+        search = search + '&' + key + '=' + attResponse[key];
+        console.log(key, attResponse[key]);
+
+      });
+      console.log('Final search');
+      console.log(search);
+      return this.http.get(this.url + '/wp-json/instant/v1/search?product_cat=' + productCat + search);
+    }
   }
 }

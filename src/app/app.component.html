@@ -6,7 +6,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Revmax</a>
+      <a class="navbar-brand" href="#">RevMax</a>
       <!-- <span class = "pull-right"><i class="fa fa-shopping-cart"></i></span> -->
       <button class = "pull-right" style="margin-top: 12px" (click)="openModel(cart)">
         <span>
@@ -16,7 +16,7 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li *ngFor="let p of pages; let i=index" class="dropdown">
+        <li *ngFor="let p of pages; let i=index" class="dropdown collapse navbar-collapse">
           <a *ngIf="p.children" class="dropdown-toggle" data-toggle="dropdown">{{p.title}}
             <!-- <span class="caret"></span> -->
           </a>
@@ -26,8 +26,10 @@
                 <!-- <span class="caret"></span> -->
               </a>
               <ul *ngIf ="s.children" class="dropdown-submenu">
-                <li *ngFor="let m of s.children; let i3=index" [routerLink]="['/product-category',m.attr,m.object_id]">
-                  {{m.title}}
+                <li *ngFor="let m of s.children; let i3=index" >
+                  <a  [routerLink]="['/product-category',m.attr,m.object_id]">{{m.title}}
+                    <!-- <span class="caret"></span> -->
+                  </a>
                 </li>
               </ul>
             </li>
@@ -83,14 +85,28 @@
           </div>
         </div>
       </div>
+      <span class="pull-right">TOTAL :
+        <b>${{ total }}.00 </b>
+      </span><br>
     </ng-container>
   </div>
+  <div *ngIf = "!cartData" class="modal-body">
+    <p><strong>Your cart is empty.</strong></p>
+  </div>
   <div class="modal-footer">
-    
-    <span class = "pull-right">TOTAL : <b>${{ total }}.00 </b></span>
     <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Close</button>
+    <form #cartForm="ngForm" (ngSubmit)="onSubmit(cartForm, $event)" method="post" action="https://revmax.twinspark.co/add-product/">
+      <input type="hidden" name="q" [(ngModel)]="cartData" value="cartData">
+      <button type="submit">CHECKOUT</button>
+    </form>
   </div>
 </ng-template>
 
 <router-outlet></router-outlet>
 
+<!-- <div (mouseover)="checkout()">
+  <form ngNoForm (submit)="formSubmit($event)" action=" https://revmax.twinspark.co/add-product/" target="_self" method="POST">
+    <input type="hidden" name="q" [(ngModel)]="cartString" value="cartString">
+    <button id="formCartSubmit" [disabled]="!cartString" ion-button color="danger" block>Checkout</button>
+  </form>
+</div> -->
