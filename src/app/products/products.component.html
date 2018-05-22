@@ -1,0 +1,77 @@
+<div class="spinner" *ngIf="spinnerEnabled"></div>
+<div *ngIf = "products && !spinnerEnabled" class="container">
+  <div class="panel panel-default">
+    <div class = "panel-header">
+      <button id="filter" name="filter" class="pull-right btn btn-primary" (click)="openModel(filter)">Filter Products
+        <i class="fa fa-filter" aria-hidden="true"></i>
+      </button>
+      <h4 class = "text-center"><strong>{{categoryName}}</strong></h4>
+    </div>
+    <div class="panel-body">
+      <!-- <div class="col-md-4 text-center">
+        <button id="filter" name="filter" class = "btn btn-primary" (click)="openModel(filter)">Filter Products<i class="fa fa-filter" aria-hidden="true"></i></button>
+      </div><br> -->
+      <div class = "row">
+        <div class = "col-xs-6" *ngFor="let product of products">
+            <img class="img-thumbnail" style="width:100%" src="{{product.images[0].src }}" [routerLink]="['/product',product.slug,product.id]">
+          <p style="color: red" tappable [routerLink]="['/product',product.slug,product.id]">{{product.name}}</p>
+          <p [innerHTML]="product.price_html" [routerLink]="['/product',product.slug,product.id]"></p>
+          <p *ngIf="!product.price_html">$ {{product.price}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!products && !spinnerEnabled" class="container">
+  <div class="col-md-4 text-center">
+    <button id="filter" name="filter" class="btn btn-primary" (click)="openModel(filter)">Filter Products
+      <i class="fa fa-filter" aria-hidden="true"></i>
+    </button>
+  </div>
+  <p class="text-center"><strong>No Search Results</strong></p>
+</div>
+
+
+<ng-template #filter>
+  <div class="modal-header">
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <span class = "pull-right"><button class="btn btn-primary" (click)="refresh()">Clear Filter</button> </span>
+    <h4 class="modal-title">Filter Products</h4>
+  </div>
+  <div class="modal-body">
+    <div class = "card">
+      <div class = "card-body">
+        <div class="col-xs-6">
+          <strong>Product Categories</strong>
+        </div>
+        <div class="col-xs-6">
+          <select [(ngModel)]="productCatResponse" name="productCat" (ngModelChange)="modalRef.hide(); getProductCategory()">
+            <option *ngFor="let cat of productCategories" [value]="cat.id">{{cat.name}}
+            </option>
+          </select>
+        </div>
+        <br>
+        <div *ngIf = "attributes">
+          <ng-container *ngFor="let att of attributes let i = index">
+              <div class="col-xs-6">
+                <strong>{{ att.name}}</strong>
+              </div>
+              <div class="col-xs-6">
+                <select [(ngModel)]="attributeResponse[att.slug]" (ngModelChange)="modalRef.hide(); getProductAttribute()">
+                  <option *ngFor="let option of attributeOptions[att.id]" [value]="option.slug">
+                     {{option.name}}
+                  </option>
+                </select>
+              </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Close</button>
+  </div>
+</ng-template>
