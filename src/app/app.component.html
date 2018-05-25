@@ -61,11 +61,11 @@
               <li *ngFor="let obj of item.variationArray">{{obj}}</li>
             </ng-container> -->
             <!-- <p style="margin-top: 16px">Quantity : {{item.quantity}}</p> -->
-            Quantity : 
+            Quantity :
             <i class="fa fa-caret-up" aria-hidden="true" (click) ="updateQuantity(item,'add')"></i>
              {{item.quantity}}
             <i class="fa fa-caret-down" aria-hidden="true" (click) ="updateQuantity(item,'sub')"></i>
-            
+
             <p>${{item.quantity * item.price }}.00</p>
             <p style="color:blue " (click)="removeFromCart(item, i)">Remove</p>
           </div>
@@ -121,3 +121,29 @@
     <button id="formCartSubmit" [disabled]="!cartString" ion-button color="danger" block>Checkout</button>
   </form>
 </div> -->
+<style>
+  ul {
+
+    margin: 0;
+    list-style:none;
+}
+
+li {
+    display: inline-block;
+    padding: 5px 10px;
+    position: relative;
+}
+li:hover > ul {
+    display: block;
+}
+ul ul {
+
+    display: none;
+    margin: 0;
+    padding: 5px 10px;
+}
+ul ul li {
+    display: block;
+}
+
+  </style>  
