@@ -1,10 +1,11 @@
-import { Component, OnInit, TemplateRef} from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
 import { WordpressService } from '../services/wordpress.service';
 import { CustomService } from '../services/custom.service';
 import { ActivatedRoute } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { CartService } from '../services/cart.service';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 @Component({
   selector: 'app-product-detail',
@@ -26,7 +27,9 @@ export class ProductDetailComponent implements OnInit {
   checkUpsell: any = [];
   constructor(public wordpress: WordpressService, public acivatedRoute: ActivatedRoute,
     public modalService: BsModalService, public customService: CustomService, public cartService: CartService
-    ) { }
+    ,public toastr: ToastsManager, vcr: ViewContainerRef) {
+      this.toastr.setRootViewContainerRef(vcr);
+     }
 
   ngOnInit() {
     this.spinnerEnabled = true;
@@ -116,6 +119,7 @@ export class ProductDetailComponent implements OnInit {
         "forcell_products": this.product.force_sell_product_info,
         "variationArray": Array.of(this.variationsData)
       })
+      this.toastr.success('Item added to cart!', 'Success!');
     } else {
       console.log('In else case');
       let added = 0;
@@ -142,7 +146,9 @@ export class ProductDetailComponent implements OnInit {
           "forcell_products": this.product.force_sell_product_info,
           "variationArray": Array.of(this.variationsData)
         })
+        
       } 
+      this.toastr.success('Item added to cart!', 'Success!');
     }
     
     this.cartService.cartItems = this.cartData;
